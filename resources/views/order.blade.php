@@ -64,8 +64,8 @@
                       $id = $order_id->order_id;
                     }else{
                       $id = "#";
+                      echo "<div id='msg' class='text-danger'>Please Select Customer</div>";
                     }
-
                 @endphp
                 <h4>Total Amount : <span id="totalamount"> ₹ 0</span> <span><a id="invoice" href="{{ url('/invoice/'.$id) }}" class="btn btn-primary" style="margin-left: 38%;">Invoice</a></span></h4>
               </div>
@@ -194,7 +194,6 @@
           sortField: 'text'
       });
   });
-      $(document).ready(()=>{
         $('.dataTables_filter input[type="search"]').css(
       {'width':'300px','display':'inline-block',"margin-left":"15%"}
     );
@@ -202,6 +201,11 @@
 
     function getOrders(){
       $.get(`{{ url('/getorders') }}`,(data,status)=>{
+        if(data.order_id){
+          var order_id = data.order_id;
+          var url = `{{ url('/invoice/') }}/${order_id}`;
+          $('#invoice').attr('href',url);
+        }
         if(data.status){
             var st =``;
             var amount = 0;
@@ -293,13 +297,13 @@
   setTimeout(() => {
     $('#alert1').hide();
   }, 2000);
-  });
 </script>
 <script>
     function addCustomerToOrder(data){
       var customer_id = data.value;
       $.get(`{{ url('/addCustomerToOrder/') }}`+"/"+customer_id,(data,status)=>{
         if(data.status){
+          $('#msg').hide();
           getOrders();
         }else{
           alert("Select User Again")

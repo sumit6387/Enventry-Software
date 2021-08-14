@@ -17,11 +17,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'showlogin']);
 Route::post('/login', [LoginController::class, 'login']);
+Route::view('reset-password', 'reset-password');
+Route::post('/sendForgotEmail', [LoginController::class, 'sendForgotEmail']);
+Route::get('/change-password/{email}', [LoginController::class, 'changePassword']);
+Route::post('ChangePassword', [LoginController::class, 'ChangePasswordPro']);
 
 Route::group(['middleware' => ["CheckUser"]], function () {
-    Route::view('/dashboard', 'index');
+    Route::get('/dashboard', [AdminController::class, 'index']);
 
-    Route::view('/stack', 'stack');
+    Route::group(['middleware' => ['CheckAdmin']], function () {
+        Route::get('/clients', [AdminController::class, 'clients']);
+        Route::post('/client', [AdminController::class, 'addclient']);
+    });
 
     Route::get('/brands', [AdminController::class, 'showbrand']);
     Route::post('/brand', [AdminController::class, 'brand']);
@@ -51,7 +58,10 @@ Route::group(['middleware' => ["CheckUser"]], function () {
     Route::post('addCustomer', [AdminController::class, 'addCustomer']);
     Route::get('/addCustomerToOrder/{customer_id}', [AdminController::class, 'addCustomerToOrder']);
 
-    Route::get('/invoice/{order_id}', [AdminController::class ,'invoice']);
+    Route::get('/invoice/{order_id}', [AdminController::class, 'invoice']);
+    Route::get('/changeStatusOfOrder', [AdminController::class, 'changeStatusOfOrder']);
+
+    Route::get('/orderHistory', [AdminController::class, 'orderHistory']);
 
     Route::get('/logout', [LoginController::class, 'logout']);
 });

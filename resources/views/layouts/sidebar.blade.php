@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <a href="{{ url('/') }}" class="brand-link">
       <img src="{{ url('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Enventry Software</span>
+      <span class="brand-text font-weight-light">Smart Enventry</span>
     </a>
 
     <!-- Sidebar -->
@@ -66,16 +66,18 @@
               </p>
             </a>
           </li>
+          @if(session('role') == "Admin")
           <li class="nav-item">
-            <a href="{{ url('/stack') }}" class="nav-link @if (Request::segment(1)=='stack')
+            <a href="{{ url('/clients') }}" class="nav-link @if (Request::segment(1)=='stack')
             active
           @endif">
               <i class="nav-icon fas fa-columns"></i>
               <p>
-                Stack
+                Add Clients
               </p>
             </a>
           </li>
+          @endif
           <li class="nav-item">
             <a href="{{ url('/order') }}" class="nav-link @if (Request::segment(1)=='order')
             active
@@ -83,6 +85,16 @@
               <i class="nav-icon far fa-envelope"></i>
               <p>
                 Order
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/orderHistory') }}" class="nav-link @if (Request::segment(1)=='orderHistory')
+            active
+          @endif">
+              <i class="nav-icon fas fa-history"></i>
+              <p>
+                Order History
               </p>
             </a>
           </li>

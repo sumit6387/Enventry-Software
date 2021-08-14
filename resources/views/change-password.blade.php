@@ -22,39 +22,39 @@
       <a href="{{ url('/') }}" class="h1"><b>Enventry</b> Software</a>
     </div>
     <div class="card-body">
-      
-      <form action="{{ url('/login') }}" method="post" class="database_operation">
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" name="email" placeholder="Email">
-          {{ csrf_field() }}
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
+        <div id="alert">
+            
         </div>
+        <h5 align="center"><b> Change  Password</b></h5>
+      <form action="{{ url('/ChangePassword') }}" method="post" class="database_operation">
         <div class="input-group mb-3">
-          <input type="password" class="form-control" name="password" placeholder="Password">
+          <input type="text" class="form-control" name="new_password" placeholder="New Password">
+          {{ csrf_field() }}
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
           </div>
         </div>
+        <div class="input-group mb-3">
+            <input type="password" class="form-control" name="cnf_password" placeholder="Confirm Password">
+            <input type="hidden" name="email" value="{{ $email }}">
+            {{ csrf_field() }}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
         <div class="row">
           <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block">Change Password</button>
           </div>
           <!-- /.col -->
         </div>
       </form>
 
-      <!-- /.social-auth-links -->
-      <p align="center">--OR--</p>
-
-      <p class="mb-1">
-        <a href="{{ url('/reset-password') }}" class="btn btn-primary btn-block">I forgot my password</a>
-      </p>
+      
     </div>
     <!-- /.card-body -->
   </div>
@@ -74,11 +74,22 @@
             var data = $('.database_operation').serialize();
             var url = $('.database_operation').attr('action');
             $.post(url,data,(data,status)=>{
+                st = `<div class="alert alert-success" role="alert">
+                        ${data.msg}
+                    </div>`;
                 if(data.status){
-                    window.location.href = data.url;
+                    setTimeout(() => {
+                            window.location.href = data.url;
+                    }, 2000);
                 }else{
-                    alert(data.msg);
+                    st = `<div class="alert alert-danger" role="alert">
+                        ${data.msg}
+                    </div>`;
                 }
+                $('#alert').html(st);
+                setTimeout(() => {
+                    $('.alert').hide();
+                }, 2000);
             });
             return false;
         });

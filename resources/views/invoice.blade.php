@@ -11,7 +11,7 @@
     <title>Invoice - Enventory Software</title>
   </head>
   <body>
-        <button class="btn btn-primary" style="margin-left: 45%;margin-top:5%;" onclick="window.print()">Print Slip</button>
+        <button class="btn btn-primary" style="margin-left: 45%;margin-top:5%;" id="printSlip">Print Slip</button>
         <div class="container" style="margin: 4% 0% 4% 4%;
         ">
 
@@ -43,7 +43,12 @@
                         <p><b>Invoice Date: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ date('d M, y',strtotime($order->updated_at)) }}</p>
                         <p><b>Order Number: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $ordercount+1 }}</p>
                         <p><b>Order Date: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ date('d M, y',strtotime($order->created_at)) }}</p>
-                        <p><b>Payment Mode: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cash On Delivery</p>
+                        <p><b>Payment Mode: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>
+                            <select name="mode" id="">
+                                <option value="Cash">Cash</option>    
+                                <option value="Digital">Digital</option>    
+                            </select>    
+                        </span></p>
                     </div>
                 </div>
                 <div class="row">
@@ -89,10 +94,25 @@
                         <hr>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-8">
+                        <h6>Goods  once sold will not be taken back .Only exchanged within 07 days.</h6>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
         </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    @include('layouts.js-link')
+    <script>
+            $('#printSlip').click(()=>{
+                $.get(`{{ url('/changeStatusOfOrder') }}`,(data,status)=>{
+                    if(data.status){
+                        window.print();
+                        window.location.href = `{{ url('/order') }}`;
+                    }
+                });
+            });
+    </script>
 
   </body>
 </html>
