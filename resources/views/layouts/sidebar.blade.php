@@ -68,7 +68,7 @@
           </li>
           @if(session('role') == "Admin")
           <li class="nav-item">
-            <a href="{{ url('/clients') }}" class="nav-link @if (Request::segment(1)=='stack')
+            <a href="{{ url('/clients') }}" class="nav-link @if (Request::segment(1)=='clients')
             active
           @endif">
               <i class="nav-icon fas fa-columns"></i>
