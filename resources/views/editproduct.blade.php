@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Enventory Software | Edit Product</title>
+  <title>Inventry Software | Edit Product</title>
 
   @include('layouts.css-link')
   <script>

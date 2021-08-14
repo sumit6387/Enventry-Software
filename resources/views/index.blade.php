@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Enventory Software | Dashboard</title>
+  <title>Inventry Software | Dashboard</title>
 
   @include('layouts.css-link')
 </head>
@@ -136,18 +136,18 @@
 <!-- ./wrapper -->
 
 @include('layouts.js-link')
-<script src="{{ url('plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ url('/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ url('/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ url('/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<script src="{{ url('/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ url('/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-<script src="{{ url('/plugins/jszip/jszip.min.js') }}"></script>
-<script src="{{ url('/plugins/pdfmake/pdfmake.min.js') }}"></script>
-<script src="{{ url('/plugins/pdfmake/vfs_fonts.js') }}"></script>
-<script src="{{ url('/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-<script src="{{ url('/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-<script src="{{ url('/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+<script src="{{ url('public/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url('public/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ url('public/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ url('public/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ url('public/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ url('public/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ url('public/plugins/jszip/jszip.min.js') }}"></script>
+<script src="{{ url('public/plugins/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ url('public/plugins/pdfmake/vfs_fonts.js') }}"></script>
+<script src="{{ url('public/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ url('public/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ url('public/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 <script>
   $(function () {
     $("#example1").DataTable({
