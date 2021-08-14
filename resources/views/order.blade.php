@@ -59,9 +59,11 @@
                   </tbody>
                 </table>
                 @php
-                    $order_id =  \App\Models\Order::orderby('id','desc')->where('status',0)->get()->first();
+                    $order_id =  \App\Models\Order::orderby('id','desc')->where('client_id',Session::get('email'))->where('status',0)->get()->first();
                     if($order_id){
-                      $id = $order_id->order_id;
+                      if($order_id->products != null){
+                        $id = $order_id->order_id;
+                      }
                     }else{
                       $id = "#";
                       echo "<div id='msg' class='text-danger'>Please Select Customer</div>";
