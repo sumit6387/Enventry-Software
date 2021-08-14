@@ -210,7 +210,7 @@
           if(data.status){
           var url = `{{ url('/invoice/') }}/${order_id}`;
           }else{
-            var url = `{{ url('/invoice/#') }}`;
+            var url = `{{ url('/order/#') }}`;
           }
           $('#invoice').attr('href',url);
         }
