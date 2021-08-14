@@ -63,6 +63,8 @@
                     if($order_id){
                       if($order_id->products != null){
                         $id = $order_id->order_id;
+                      }else{
+                        $id = "#";
                       }
                     }else{
                       $id = "#";
