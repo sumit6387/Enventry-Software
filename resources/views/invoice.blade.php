@@ -17,7 +17,7 @@
 
                 <div class="row">
                     <div class="col-md-8"><img src="{{ url('/images/invoicelogo.png') }}" style="height: 82%;
-                        width: 38%;" alt="Enventry Logo"></div>
+                        width: 38%;" alt="Inventry Logo"></div>
                     <div class="col-md-4">
                         <p><b>Dhruve Collection</b></p>
                         <p>15-16, Vishwakarma complex.</p>
