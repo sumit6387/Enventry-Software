@@ -59,7 +59,7 @@
 
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2021 <a href="#">Sumit Kumar</a>.</strong>
+    <strong>Copyright &copy; 2021 <a href="#">Online Web Care</a>.</strong>
     All rights reserved.
   </footer>
 
