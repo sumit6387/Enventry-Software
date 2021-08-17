@@ -121,7 +121,7 @@
             $('#discount').blur(()=>{
                 var disc = $('#discount').val();
                 var total = {{ $totalAmount }};
-                 finaltotal = ((parseInt(total) * disc)/100) + total;
+                 finaltotal = total- ((parseInt(total) * disc)/100) ;
                  var order_id = `{{ Request::segment(2) }}`;
                  $.get(`{{ url('/updateTotalBalance/') }}/${order_id}/${finaltotal}`,(data,status)=>{
                     $('#total').html(finaltotal);
