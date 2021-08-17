@@ -388,11 +388,16 @@ class AdminController extends Controller
         $email = $request->session()->get('email');
         $order = Order::orderby('id', 'desc')->where('client_id', $email)->where('status', 0)->get()->first();
         if ($order) {
+            if ($order->products) {
+                $order_id = $order->order_id;
+            } else {
+                $order_id = null;
+            }
             if ($order->products == null) {
                 return response()->json([
                     'status' => false,
                     'msg' => "No Products Found",
-                    'order_id' => $order->order_id,
+                    'order_id' => $order_id,
                 ]);
             }
             $arr = json_decode($order->products);

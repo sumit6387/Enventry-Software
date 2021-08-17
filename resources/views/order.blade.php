@@ -212,8 +212,10 @@
           }else{
             var url = `{{ url('/order/#') }}`;
           }
-          $('#invoice').attr('href',url);
+        }else{
+          var url = `{{ url('/order/#') }}`;
         }
+          $('#invoice').attr('href',url);
         if(data.status){
             var st =``;
             var amount = 0;
