@@ -318,8 +318,10 @@ class AdminController extends Controller
             ->get();
         $data['customers'] = Customer::orderby('id', 'desc')->where('client_id', $email)->get();
         $data['customer_id'] = Order::orderby('id', 'desc')->where('client_id', $email)->where('status', 0)->get()->first();
+        $data['customer_detail'] = array();
         if ($data['customer_id']) {
             $data['customer_id'] = $data['customer_id']->customer;
+            $data['customer_detail'] = Customer::where('customer_id', $data['customer_id']->customer)->get()->first();
         } else {
             $data['customer_id'] = "";
         }
@@ -574,6 +576,7 @@ class AdminController extends Controller
                 return response()->json([
                     'status' => true,
                     'msg' => "Customer Added!!",
+                    'customer' => $customer,
                 ]);
             } else {
                 $new = new Order();
