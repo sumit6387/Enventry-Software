@@ -36,7 +36,7 @@
                       @foreach ($customers as $customer)
                         <option @if ($customer->customer_id == $customer_id)
                           selected
-                        @endif value="{{ $customer->customer_id }}">{{ $customer->name }}</option>
+                        @endif value="{{ $customer->customer_id }}">{{ $customer->name }}- {{ $customer->mobile_no }}</option>
                       @endforeach
                     </select>
                     
