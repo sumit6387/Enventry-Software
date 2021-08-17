@@ -20,6 +20,8 @@ class UserSeeder extends Seeder
         $newuser->email = "sumitkumar993618@gmail.com";
         $newuser->password = Hash::make("sumitkumar@12");
         $newuser->role = "Admin";
+        $newuser->company_name = "Smart Enventry";
+        $newuser->logo = "https://smartenventry.ml/public/images/invoicelogo.png";
         $newuser->save();
     }
 }

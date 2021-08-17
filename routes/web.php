@@ -60,6 +60,7 @@ Route::group(['middleware' => ["CheckUser"]], function () {
 
     Route::get('/invoice/{order_id}', [AdminController::class, 'invoice']);
     Route::get('/changeStatusOfOrder', [AdminController::class, 'changeStatusOfOrder']);
+    Route::get('/updateTotalBalance/{order_id}/{amount}', [AdminController::class, 'updateTotalBalance']);
 
     Route::get('/orderHistory', [AdminController::class, 'orderHistory']);
 

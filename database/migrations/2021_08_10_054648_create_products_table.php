@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->string('category');
             $table->string('price');
             $table->string('quantity');
+            $table->string('gst');
             $table->timestamps();
         });
     }

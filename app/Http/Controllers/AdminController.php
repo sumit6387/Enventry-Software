@@ -210,6 +210,7 @@ class AdminController extends Controller
             'category' => "required",
             'price' => "required",
             'quantity' => "required",
+            'gst' => "required",
         ]);
 
         if ($valid->passes()) {
@@ -221,6 +222,7 @@ class AdminController extends Controller
             $product->category = $request->category;
             $product->price = $request->price;
             $product->quantity = $request->quantity;
+            $product->gst = $request->gst;
             $product->save();
             return response()->json([
                 'status' => true,
@@ -354,7 +356,7 @@ class AdminController extends Controller
                 $product = Product::where('product_id', $request->product_id)->where('client_id', $email)->get()->first();
                 $product->quantity -= 1;
                 $product->save();
-                $order->total_amount += $product->price;
+                $order->total_amount += $product->price + ($product->price * $product->gst) / 100;
                 $order->save();
                 return response()->json([
                     'status' => true,
@@ -366,7 +368,7 @@ class AdminController extends Controller
                 $product = Product::where('product_id', $request->product_id)->where('client_id', $email)->get()->first();
                 $product->quantity -= 1;
                 $product->save();
-                $order->total_amount = $product->price;
+                $order->total_amount = $product->price + ($product->price * $product->gst) / 100;
                 $order->save();
                 return response()->json([
                     'status' => true,
@@ -396,7 +398,7 @@ class AdminController extends Controller
             $arr = json_decode($order->products);
             $products = array();
             foreach ($arr as $key => $value) {
-                $product = Product::select('product_id', 'name', 'price')->where('client_id', $email)->where('product_id', $value->product_id)->get()->first();
+                $product = Product::select('product_id', 'name', 'price', 'gst')->where('client_id', $email)->where('product_id', $value->product_id)->get()->first();
                 $product->product_quantity = $value->quantity;
                 array_push($products, $product);
             }
@@ -428,12 +430,14 @@ class AdminController extends Controller
                         $quantity = $value->quantity;
                     }
                 }
+                $product->quantity += $quantity;
+                $product->save();
                 $data = [];
                 foreach ($arr as $key => $value) {
                     array_push($data, $value);
                 }
                 $order->products = json_encode($data);
-                $order->total_amount -= $product->price * $quantity;
+                $order->total_amount -= $product->price * $quantity + (($product->price * $product->gst) / 100) * $quantity;
                 $order->save();
                 return response()->json([
                     'status' => true,
@@ -478,8 +482,13 @@ class AdminController extends Controller
                         if ($value->product_id == $request->product_id) {
                             if ($value->quantity > $request->quantity) {
                                 $product->quantity = $product->quantity + ($value->quantity - $request->quantity);
+                                $price = Product::where(['product_id' => $value->product_id, 'client_id' => session('email')])->get()->first();
+                                $order->total_amount = ($order->total_amount - $value->quantity * $price->price - ($price->price * $price->gst) * ($value->quantity - $request->quantity)) + ($request->quantity * $price->price);
                             } else {
                                 $product->quantity = $product->quantity - ($request->quantity - $value->quantity);
+                                $price = Product::where(['product_id' => $value->product_id, 'client_id' => session('email')])->get()->first();
+                                $order->total_amount = ($order->total_amount - $value->quantity * $price->price) + ($request->quantity * $price->price) +
+                                    ($price->price * $price->gst) * ($request->quantity - $value->quantity);
                             }
                             $product->save();
                             $value->quantity = $request->quantity;
@@ -636,31 +645,48 @@ class AdminController extends Controller
         $valid = Validator::make($request->all(), [
             'name' => "required",
             'email' => "required",
+            'company_name' => "required",
+            'logo' => "required",
         ]);
 
         if ($valid->passes()) {
             $client = User::where('email', $request->email)->get()->first();
             if ($client) {
-                return response()->json([
-                    'status' => false,
+                return redirect('/clients')->with([
+                    'status' => 'danger',
                     'msg' => "This email Already Registered!",
                 ]);
             }
             $newClient = new User();
             $newClient->name = $request->name;
             $newClient->email = $request->email;
+            $newClient->company_name = $request->company_name;
+            if ($request->file('logo')) {
+                $extension = $request->file('logo')->getClientOriginalExtension();
+                $filename = rand(11111111, 999999999) . "." . $extension;
+                $path = $request->file('logo')->move(public_path('public/client/logo/'), $filename);
+                $url1 = url('public/client/logo/' . $filename);
+                $newClient->logo = $url1;
+            }
+            if ($request->gst_no) {
+                $newClient->gst_no = $request->gst_no;
+            }
             $newClient->password = Hash::make("client@6387");
             $newClient->save();
             $function = new AllFunction();
             $function->sendIdPassword($request->email, 'client@6387');
-            return response()->json([
-                'status' => true,
+            return redirect('/clients')->with([
+                'status' => 'success',
                 'msg' => "Client Added Successfully!!",
             ]);
         } else {
-            return response()->json([
-                'status' => false,
-                'msg' => $valid->errors()->all(),
+            $error = '';
+            foreach ($valid->errors()->all() as $key => $value) {
+                $error = $error . $value;
+            }
+            return redirect('/clients')->with([
+                'status' => 'danger',
+                'msg' => $error,
             ]);
         }
     }
@@ -686,6 +712,22 @@ class AdminController extends Controller
             $value->product_list = $products;
         }
         return view('orderhistory', ["orders" => $order]);
+    }
+
+    public function updateTotalBalance($order_id, $amount)
+    {
+        $order = Order::where(['order_id' => $order_id, 'client_id' => session('email')])->get()->first();
+        if ($order) {
+            $order->total_amount = $amount;
+            $order->save();
+            return response()->json([
+                'status' => true,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+            ]);
+        }
     }
 
 }

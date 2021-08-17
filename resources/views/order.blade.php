@@ -219,7 +219,9 @@
             var amount = 0;
               if(data.data.length > 0){
                 (data.data).forEach(element => {
-                amount += parseInt(element.price) *element.product_quantity;
+                amount += (parseInt(element.price) *element.product_quantity)+(element.price * element.gst)/100;
+                console.log(element);
+                
                 st += `<tr>
                             <td>${element.name}</td>
                             <td><input type="number" style="width:50px;" class="changequantity" data-id="${element.product_id}" value="${element.product_quantity}"></td>

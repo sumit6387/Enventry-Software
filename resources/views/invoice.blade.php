@@ -19,12 +19,15 @@
                     <div class="col-md-8"><img src="{{ url('/images/invoicelogo.png') }}" style="height: 82%;
                         width: 38%;" alt="Inventry Logo"></div>
                     <div class="col-md-4">
-                        <p><b>Dhruve Collection</b></p>
+                        @php
+                            $user = \App\Models\User::where('email',session('email'))->get()->first();
+                        @endphp
+                        <p><b>{{ $user->company_name }}</b></p>
                         <p>15-16, Vishwakarma complex.</p>
                         <p>Shastripuram road Sikandra Agra – 282007</p>
                         <br>
                         <p>PAN NO : <b>AGCPT6740J</b> </p>
-                        <p>GST NO : <b>09AGCPT6740J1ZY</b></p>
+                        <p>GST NO : <b>{{ $user->gst_no }}</b></p>
                     </div>
                 </div>
                 <br>
@@ -75,7 +78,7 @@
                                 </tr>
                             @endforeach
                             @php
-                                $gst = ($amount * 18)/100;
+                                $gst = ($amount * 0)/100;
                                 $totalAmount = $amount+$gst;
                             @endphp
                             
@@ -87,10 +90,10 @@
                         <hr>
                         <p><b>Sub Total </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ {{ $amount }}</p>
                         <hr>
-                        <p><b>Discount  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ 0</p>
+                        <p><b>Discount  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % <span><input type="text" id="discount" style="width: 30px;"></span></p>
                         <hr>
                         <p><b>GST (18%)  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;₹ {{ $gst }}</p><hr>
-                        <p><b>Total   </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ {{ $totalAmount }}</p>
+                        <p><b>Total   </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ <span id="total">{{ $totalAmount }}</span></p>
                         <hr>
                     </div>
                 </div>
@@ -108,8 +111,19 @@
                 $.get(`{{ url('/changeStatusOfOrder') }}`,(data,status)=>{
                     if(data.status){
                         window.print();
-                        window.location.href = `{{ url('/order') }}`;
+                        setTimeout(() => {
+                            window.location.href = `{{ url('/order') }}`;
+                        }, 3000);
                     }
+                });
+            });
+            $('#discount').blur(()=>{
+                var disc = $('#discount').val();
+                var total = {{ $totalAmount }};
+                 finaltotal = ((parseInt(total) * disc)/100) + total;
+                 var order_id = `{{ Request::segment(2) }}`;
+                 $.get(`{{ url('/updateTotalBalance/') }}/${order_id}/${finaltotal}`,(data,status)=>{
+                    $('#total').html(finaltotal);
                 });
             });
     </script>

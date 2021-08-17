@@ -68,7 +68,7 @@
             
           </div>
         
-        <form id="quickForm" action="{{ url('/client') }}" method="POST" class="database_operation">
+        <form id="quickForm" action="{{ url('/client') }}" method="POST" enctype="multipart/form-data">
           <div class="card-body">
             <div class="form-group">
               <label for="exampleInputEmail1">Name</label>
@@ -78,6 +78,18 @@
             <div class="form-group">
               <label for="exampleInputEmail1">Email</label>
               <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Email">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Company Name</label>
+              <input type="text" name="company_name" class="form-control" id="exampleInputEmail1" placeholder="Enter Company Name">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Company Logo</label>
+              <input type="file" name="logo" class="form-control" id="exampleInputEmail1" placeholder="">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">GST No.</label>
+              <input type="text" name="gst_no" class="form-control" id="exampleInputEmail1" placeholder="Enter GST no">
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-primary">Submit</button>

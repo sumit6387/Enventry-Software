@@ -53,6 +53,7 @@
                 <th>Category</th>
                 <th>Price</th>
                 <th>Quantity</th>
+                <th>GST(%)</th>
                 <th>Action</th>
               </tr>
               </thead>
@@ -66,6 +67,7 @@
                   <td>{{ $product->category_name }}</td>
                   <td>₹ {{ $product->price }}</td>
                   <td>{{ $product->quantity }}</td>
+                  <td>{{ $product->gst }}</td>
                   <td><a href="{{ url('/editproduct/'.$product->product_id) }}" class="btn btn-primary" style="margin-left: 10%;margin-right:5%;">Edit</a><span><a href="{{ url('/deleteproduct/'.$product->product_id) }}" class="btn btn-danger">Delete</a></span></td>
                 </tr>
                 @endforeach
@@ -124,6 +126,10 @@
             <div class="form-group">
               <label for="quantity">Quantity </label>
               <input type="text" name="quantity" class="form-control" id="exampleInputEmail1" placeholder="Enter Quantity">
+            </div>
+            <div class="form-group">
+              <label for="gst">GST (%) </label>
+              <input type="text" name="gst" class="form-control" id="exampleInputEmail1" placeholder="Enter GST(%)">
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-primary">Submit</button>
