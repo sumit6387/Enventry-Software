@@ -14,14 +14,15 @@
         <button class="btn btn-primary" style="margin-left: 45%;margin-top:5%;" id="printSlip">Print Slip</button>
         <div class="container" style="margin: 4% 0% 4% 4%;
         ">
+        @php
+        $user = \App\Models\User::where('email',session('email'))->get()->first();
+    @endphp
 
                 <div class="row">
-                    <div class="col-md-8"><img src="{{ url('/images/invoicelogo.png') }}" style="height: 82%;
+                    <div class="col-md-8"><img src="{{ $user->logo }}" style="height: 82%;
                         width: 38%;" alt="Inventry Logo"></div>
                     <div class="col-md-4">
-                        @php
-                            $user = \App\Models\User::where('email',session('email'))->get()->first();
-                        @endphp
+                        
                         <p><b>{{ $user->company_name }}</b></p>
                         <p>15-16, Vishwakarma complex.</p>
                         <p>Shastripuram road Sikandra Agra – 282007</p>
