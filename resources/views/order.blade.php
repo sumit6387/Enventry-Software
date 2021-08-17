@@ -99,6 +99,18 @@
                 </table>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p><b>Customer ID : <span id="cust_id">FGHJHJ</span></b></p>
+                <p><b>Name : <span id="cust_name">Sumit Kumar</span></b></p>
+                <p><b>Email : <span id="cust_email">Sumit@gmail.com</span></b></p>
+              </div>
+              <div class="col-md-6">
+                <p><b>Mobile No : <span id="cust_no">FGHJHJ</span></b></p>
+                <p><b>Address : <span id="cust_address">Nighasan</span></b></p>
+                <p><b>Pincode : <span id="cust_address">262903</span></b></p>
+              </div>
+            </div>
             
           </div>
         </div>
