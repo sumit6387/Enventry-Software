@@ -609,7 +609,7 @@ class AdminController extends Controller
             $ar = [];
             foreach ($arr as $key => $value) {
                 $product = Product::select('name', 'price', 'gst')->where('client_id', $email)->where('product_id', $value->product_id)->get()->first();
-                $prod = array('name' => $product->name, 'price' => $product->price, 'quantity' => $value->quantity);
+                $prod = array('name' => $product->name, 'price' => $product->price, 'quantity' => $value->quantity, 'gst' => $product->gst);
                 array_push($ar, $prod);
             }
             $data['products'] = $ar;
