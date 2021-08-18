@@ -321,7 +321,7 @@ class AdminController extends Controller
         $data['customer_detail'] = array();
         if ($data['customer_id']) {
             $data['customer_id'] = $data['customer_id']->customer;
-            // $data['customer_detail'] = Customer::where('customer_id', $data['customer_id']->customer)->get()->first();
+            $data['customer_detail'] = Customer::where('customer_id', $data['customer_id'])->get()->first();
         } else {
             $data['customer_id'] = "";
         }
@@ -710,7 +710,7 @@ class AdminController extends Controller
         $email = $request->session()->get('email');
         $order = Order::orderby('id', 'desc')->where('status', 1)->where('client_id', $email)->get();
         $products = array();
-        if($order){
+        if ($order) {
             foreach ($order as $key => $value) {
                 $ar = json_decode($value->products);
                 $value->customer_name = Customer::select('name')->where('customer_id', $value->customer)->where('client_id', $email)->get()->first()->name;
