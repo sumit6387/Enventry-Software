@@ -608,7 +608,7 @@ class AdminController extends Controller
             $data['ordercount'] = Order::where('client_id', $email)->get()->count();
             $ar = [];
             foreach ($arr as $key => $value) {
-                $product = Product::select('name', 'price')->where('client_id', $email)->where('product_id', $value->product_id)->get()->first();
+                $product = Product::select('name', 'price', 'gst')->where('client_id', $email)->where('product_id', $value->product_id)->get()->first();
                 $prod = array('name' => $product->name, 'price' => $product->price, 'quantity' => $value->quantity);
                 array_push($ar, $prod);
             }
