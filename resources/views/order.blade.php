@@ -351,6 +351,7 @@
                 <p><b>Address : </b><span id="cust_address">${data.customer.address}</span></p>
                 <p><b>Pincode : </b><span id="cust_pincode">${data.customer.pincode}</span></p>
               </div>`;
+              $('#customer_detail').html(st);
         }else{
           alert("Select User Again")
         }

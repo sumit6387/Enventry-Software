@@ -321,7 +321,7 @@ class AdminController extends Controller
         $data['customer_detail'] = array();
         if ($data['customer_id']) {
             $data['customer_id'] = $data['customer_id']->customer;
-            $data['customer_detail'] = Customer::where('customer_id', $data['customer_id']->customer)->get()->first();
+            // $data['customer_detail'] = Customer::where('customer_id', $data['customer_id']->customer)->get()->first();
         } else {
             $data['customer_id'] = "";
         }
@@ -708,16 +708,20 @@ class AdminController extends Controller
     public function orderHistory(Request $request)
     {
         $email = $request->session()->get('email');
-        $order = Order::orderby('id', 'desc')->where('client_id', $email)->get();
+        $order = Order::orderby('id', 'desc')->where('status', 1)->where('client_id', $email)->get();
         $products = array();
-        foreach ($order as $key => $value) {
-            $ar = json_decode($value->products);
-            $value->customer_name = Customer::select('name')->where('customer_id', $value->customer)->where('client_id', $email)->get()->first()->name;
-            foreach ($ar as $key => $prod) {
-                $product = ["name" => Product::select('name')->where('product_id', $prod->product_id)->where('client_id', $email)->get()->first()->name];
-                \array_push($products, $product);
+        if($order){
+            foreach ($order as $key => $value) {
+                $ar = json_decode($value->products);
+                $value->customer_name = Customer::select('name')->where('customer_id', $value->customer)->where('client_id', $email)->get()->first()->name;
+                if ($ar) {
+                    foreach ($ar as $key => $prod) {
+                        $product = ["name" => Product::select('name')->where('product_id', $prod->product_id)->where('client_id', $email)->get()->first()->name];
+                        \array_push($products, $product);
+                    }
+                }
+                $value->product_list = $products;
             }
-            $value->product_list = $products;
         }
         return view('orderhistory', ["orders" => $order]);
     }
