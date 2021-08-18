@@ -74,7 +74,7 @@
                                     <td>{{ $product['quantity'] }}</td>
                                     <td> ₹ {{ $product['price']  }} * {{ $product['quantity']}} +₹ {{ ($product['gst']* $product['price']*$product['quantity'])/100}}  =  ₹ {{ $product['price'] * $product['quantity'] + ($product['gst']* $product['price']*$product['quantity'])/100}}</td>
                                     @php
-                                        $amount += $product['price'] * $product['quantity'] + ($product['gst']* $product['price']*$product['quantity'])/100);
+                                        $amount += $product['price'] * $product['quantity'] + ($product['gst']* $product['price']*$product['quantity'])/100;
                                     @endphp
                                 </tr>
                             @endforeach
