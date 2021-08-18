@@ -101,25 +101,25 @@
             </div>
             <div class="row" id="customer_detail">
               <div class="col-md-6">
-                <p><b>Customer ID</b> : <span id="cust_id">@if (isset($customer_detil))
-                  {{ $customer_detil->customer_id }}
+                <p><b>Customer ID</b> : <span id="cust_id">@if (isset($customer_detail))
+                  {{ $customer_detail->customer_id }}
                 @endif</span></p>
-                <p><b>Name : </b><span id="cust_name">@if (isset($customer_detil))
-                  {{ $customer_detil->name }}
+                <p><b>Name : </b><span id="cust_name">@if (isset($customer_detail))
+                  {{ $customer_detail->name }}
                 @endif</span></p>
-                <p><b>Email : </b><span id="cust_email">@if (isset($customer_detil))
-                  {{ $customer_detil->email }}
+                <p><b>Email : </b><span id="cust_email">@if (isset($customer_detail))
+                  {{ $customer_detail->email }}
                 @endif</span></p>
               </div>
               <div class="col-md-6">
-                <p><b>Mobile No : </b><span id="cust_no">@if (isset($customer_detil))
-                  {{ $customer_detil->mobile_no }}
+                <p><b>Mobile No : </b><span id="cust_no">@if (isset($customer_detail))
+                  {{ $customer_detail->mobile_no }}
                 @endif</span></p>
-                <p><b>Address : </b><span id="cust_address">@if (isset($customer_detil))
-                  {{ $customer_detil->address }}
+                <p><b>Address : </b><span id="cust_address">@if (isset($customer_detail))
+                  {{ $customer_detail->address }}
                 @endif</span></p>
-                <p><b>Pincode : </b><span id="cust_pincode">@if (isset($customer_detil))
-                  {{ $customer_detil->pincode }}
+                <p><b>Pincode : </b><span id="cust_pincode">@if (isset($customer_detail))
+                  {{ $customer_detail->pincode }}
                 @endif</span></p>
               </div>
             </div>
