@@ -340,9 +340,11 @@
       $.get(`{{ url('/addCustomerToOrder/') }}`+"/"+customer_id,(data,status)=>{
         if(data.status){
           $('#msg').hide();
+          console.log(data);
+          
           getOrders();
           st = `<div class="col-md-6">
-                <p><b>Customer ID</b> : <span id="cust_id">${data.customer.customer_id}</span></p>
+                <p><b>Customer ID</b> : <span id="cust_id">${customer_id}</span></p>
                 <p><b>Name : </b><span id="cust_name">${data.customer.name}</span></p>
                 <p><b>Email : </b><span id="cust_email">${data.customer.email}</span></p>
               </div>
