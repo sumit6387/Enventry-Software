@@ -107,18 +107,18 @@
                 <p><b>Name : </b><span id="cust_name">@if (count($customer_detail))
                   {{ $customer_detail->name }}
                 @endif</span></p>
-                <p><b>Email : </b><span id="cust_email">@if (isset($customer_detail))
+                <p><b>Email : </b><span id="cust_email">@if (count($customer_detail))
                   {{ $customer_detail->email }}
                 @endif</span></p>
               </div>
               <div class="col-md-6">
-                <p><b>Mobile No : </b><span id="cust_no">@if (isset($customer_detail))
+                <p><b>Mobile No : </b><span id="cust_no">@if (count($customer_detail))
                   {{ $customer_detail->mobile_no }}
                 @endif</span></p>
-                <p><b>Address : </b><span id="cust_address">@if (isset($customer_detail))
+                <p><b>Address : </b><span id="cust_address">@if (count($customer_detail))
                   {{ $customer_detail->address }}
                 @endif</span></p>
-                <p><b>Pincode : </b><span id="cust_pincode">@if (isset($customer_detail))
+                <p><b>Pincode : </b><span id="cust_pincode">@if (count($customer_detail))
                   {{ $customer_detail->pincode }}
                 @endif</span></p>
               </div>
