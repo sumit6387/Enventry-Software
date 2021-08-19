@@ -317,7 +317,7 @@ class AdminController extends Controller
             ->join('categories', 'products.category', '=', 'categories.id')
             ->get();
         $data['customers'] = Customer::orderby('id', 'desc')->where('client_id', $email)->get();
-        $data['customer_id'] = Order::orderby('id', 'desc')->where('client_id', $email)->where('status', 0)->get()->first();
+        $data['customer_id'] = Order::orderby('id', 'desc')->where("customer","!=","")->where('client_id', $email)->where('status', 0)->get()->first();
         $data['customer_detail'] = array();
         if ($data['customer_id']) {
             $data['customer_id'] = $data['customer_id']->customer;
