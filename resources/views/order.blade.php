@@ -101,10 +101,10 @@
             </div>
             <div class="row" id="customer_detail">
               <div class="col-md-6">
-                <p><b>Customer ID</b> : <span id="cust_id">@if (isset($customer_detail))
+                <p><b>Customer ID</b> : <span id="cust_id">@if (count($customer_detail))
                   {{ $customer_detail->customer_id }}
                 @endif</span></p>
-                <p><b>Name : </b><span id="cust_name">@if (isset($customer_detail))
+                <p><b>Name : </b><span id="cust_name">@if (count($customer_detail))
                   {{ $customer_detail->name }}
                 @endif</span></p>
                 <p><b>Email : </b><span id="cust_email">@if (isset($customer_detail))
