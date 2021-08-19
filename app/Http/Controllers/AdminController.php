@@ -325,6 +325,7 @@ class AdminController extends Controller
         } else {
             $data['customer_id'] = "";
         }
+        dd($data);
         return view('order', $data);
     }
 
