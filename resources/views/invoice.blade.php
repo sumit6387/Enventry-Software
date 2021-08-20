@@ -72,7 +72,7 @@
                                 <tr>
                                     <td>{{ $product['name'] }} </td>
                                     <td>{{ $product['quantity'] }}</td>
-                                    <td> ₹ {{ $product['price']  }} * {{ $product['quantity']}} +₹ {{ $product['price'] }}  =  ₹ {{ $product['price'] * $product['quantity']}}</td>
+                                    <td> ₹ {{ $product['price']  }} * {{ $product['quantity']}}   =  ₹ {{ $product['price'] * $product['quantity']}}</td>
                                     @php
                                         $amount += $product['price'] * $product['quantity'] ;
                                     @endphp
