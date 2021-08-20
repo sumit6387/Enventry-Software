@@ -81,7 +81,7 @@
                             @php
                             $gs = 0;
                             foreach ($gst as $key => $value) {
-                                if($gs == 0){
+                                if($gs == 0 &&$value->amount == null){
                                     $gs = $value->gst;
                                 }
                                 if($value->amount != null && $value->condition !=null){
