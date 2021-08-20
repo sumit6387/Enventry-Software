@@ -674,7 +674,7 @@ class AdminController extends Controller
                 $extension = $request->file('logo')->getClientOriginalExtension();
                 $filename = rand(11111111, 999999999) . "." . $extension;
                 $path = $request->file('logo')->move(public_path('/client/logo/'), $filename);
-                $url1 = url('/client/logo/' . $filename);
+                $url1 = url('public/client/logo/' . $filename);
                 $newClient->logo = $url1;
             }
             if ($request->gst_no) {
