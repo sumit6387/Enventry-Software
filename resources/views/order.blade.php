@@ -99,30 +99,6 @@
                 </table>
               </div>
             </div>
-            <div class="row" id="customer_detail">
-              <div class="col-md-6">
-                <p><b>Customer ID</b> : <span id="cust_id">@if (count($customer_detail))
-                  {{ $customer_detail->customer_id }}
-                @endif</span></p>
-                <p><b>Name : </b><span id="cust_name">@if (count($customer_detail))
-                  {{ $customer_detail->name }}
-                @endif</span></p>
-                <p><b>Email : </b><span id="cust_email">@if (count($customer_detail))
-                  {{ $customer_detail->email }}
-                @endif</span></p>
-              </div>
-              <div class="col-md-6">
-                <p><b>Mobile No : </b><span id="cust_no">@if (count($customer_detail))
-                  {{ $customer_detail->mobile_no }}
-                @endif</span></p>
-                <p><b>Address : </b><span id="cust_address">@if (count($customer_detail))
-                  {{ $customer_detail->address }}
-                @endif</span></p>
-                <p><b>Pincode : </b><span id="cust_pincode">@if (count($customer_detail))
-                  {{ $customer_detail->pincode }}
-                @endif</span></p>
-              </div>
-            </div>
             
           </div>
         </div>
@@ -245,9 +221,7 @@
             var amount = 0;
               if(data.data.length > 0){
                 (data.data).forEach(element => {
-                amount += (parseInt(element.price) *element.product_quantity)+(element.price * element.gst)/100;
-                console.log(element);
-                
+                amount += (parseInt(element.price) *element.product_quantity);
                 st += `<tr>
                             <td>${element.name}</td>
                             <td><input type="number" style="width:50px;" class="changequantity" data-id="${element.product_id}" value="${element.product_quantity}"></td>

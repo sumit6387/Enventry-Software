@@ -49,6 +49,10 @@ Route::group(['middleware' => ["CheckUser"]], function () {
     Route::get('/editproduct/{id}', [AdminController::class, 'editproduct']);
     Route::post('/updateproduct', [AdminController::class, 'updateproduct']);
 
+    Route::get('/gst-on-bill', [AdminController::class, 'gstonbill']);
+    Route::post('/addgst', [AdminController::class, 'addgst']);
+    Route::get('/deleteGST/{id}', [AdminController::class, 'deleteGST']);
+
     Route::get('/order', [AdminController::class, 'order']);
     Route::post('/addItem', [AdminController::class, 'addItem']);
     Route::get('/getorders', [AdminController::class, 'getorders']);
@@ -59,7 +63,7 @@ Route::group(['middleware' => ["CheckUser"]], function () {
     Route::get('/addCustomerToOrder/{customer_id}', [AdminController::class, 'addCustomerToOrder']);
 
     Route::get('/invoice/{order_id}', [AdminController::class, 'invoice']);
-    Route::get('/changeStatusOfOrder', [AdminController::class, 'changeStatusOfOrder']);
+    Route::get('/changeStatusOfOrder/{gst}', [AdminController::class, 'changeStatusOfOrder']);
     Route::get('/updateTotalBalance/{order_id}/{amount}', [AdminController::class, 'updateTotalBalance']);
 
     Route::get('/orderHistory', [AdminController::class, 'orderHistory']);

@@ -69,6 +69,16 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ url('/gst-on-bill') }}" class="nav-link @if (Request::segment(1)=='gst-on-bill')
+            active
+          @endif">
+              <i class="nav-icon far fa-image"></i> 
+              <p>
+                GST On Bill
+              </p>
+            </a>
+          </li>
           @if(session('role') == "Admin")
           <li class="nav-item">
             <a href="{{ url('/clients') }}" class="nav-link @if (Request::segment(1)=='clients')

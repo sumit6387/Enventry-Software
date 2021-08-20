@@ -72,14 +72,35 @@
                                 <tr>
                                     <td>{{ $product['name'] }} </td>
                                     <td>{{ $product['quantity'] }}</td>
-                                    <td> ₹ {{ $product['price']  }} * {{ $product['quantity']}} +₹ {{ ($product['gst']* $product['price']*$product['quantity'])/100}}  =  ₹ {{ $product['price'] * $product['quantity'] + ($product['gst']* $product['price']*$product['quantity'])/100}}</td>
+                                    <td> ₹ {{ $product['price']  }} * {{ $product['quantity']}} +₹ {{ $product['price'] }}  =  ₹ {{ $product['price'] * $product['quantity']}}</td>
                                     @php
-                                        $amount += $product['price'] * $product['quantity'] + ($product['gst']* $product['price']*$product['quantity'])/100;
+                                        $amount += $product['price'] * $product['quantity'] ;
                                     @endphp
                                 </tr>
                             @endforeach
                             @php
-                                $gst = ($amount * 0)/100;
+                            $gs = 0;
+                            foreach ($gst as $key => $value) {
+                                if($gs == 0){
+                                    $gs = $value->gst;
+                                }
+                                if($value->amount != null && $value->condition !=null){
+                                    if($value->condition =="Greater"){
+                                        if($amount > $value->amount){
+                                            $gs = $value->gst;
+                                        }
+                                    }else if($value->condtion == "Equal"){
+                                        if($amount == $value->amount){
+                                            $gs = $value->gst;
+                                        }
+                                    }else if($value->condtion === "Less"){
+                                        if($amount < $value->amount){
+                                            $gs = $value->gst;
+                                        }
+                                    }
+                                }
+                            }
+                                $gst = ($amount * $gs)/100;
                                 $totalAmount = $amount+$gst;
                             @endphp
                             
@@ -93,7 +114,7 @@
                         <hr>
                         <p><b>Discount  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % <span><input type="text" id="discount" style="width: 30px;"></span></p>
                         <hr>
-                        <p><b>GST (0%)  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;₹ {{ $gst }}</p><hr>
+                        <p><b>GST ({{ $gs }}%)  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;₹ {{ $gst }}</p><hr>
                         <p><b>Total   </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ <span id="total">{{ $totalAmount }}</span></p>
                         <hr>
                     </div>
@@ -109,7 +130,7 @@
     @include('layouts.js-link')
     <script>
             $('#printSlip').click(()=>{
-                $.get(`{{ url('/changeStatusOfOrder') }}`,(data,status)=>{
+                $.get(`{{ url('/changeStatusOfOrder/'.$gs) }}`,(data,status)=>{
                     if(data.status){
                         window.print();
                         setTimeout(() => {

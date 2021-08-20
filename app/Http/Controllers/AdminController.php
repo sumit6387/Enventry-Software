@@ -6,6 +6,7 @@ use App\Functions\AllFunction;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\GST;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -210,7 +211,6 @@ class AdminController extends Controller
             'category' => "required",
             'price' => "required",
             'quantity' => "required",
-            'gst' => "required",
         ]);
 
         if ($valid->passes()) {
@@ -222,7 +222,6 @@ class AdminController extends Controller
             $product->category = $request->category;
             $product->price = $request->price;
             $product->quantity = $request->quantity;
-            $product->gst = $request->gst;
             $product->save();
             return response()->json([
                 'status' => true,
@@ -325,7 +324,6 @@ class AdminController extends Controller
         } else {
             $data['customer_id'] = "";
         }
-        dd($data);
         return view('order', $data);
     }
 
@@ -359,7 +357,7 @@ class AdminController extends Controller
                 $product = Product::where('product_id', $request->product_id)->where('client_id', $email)->get()->first();
                 $product->quantity -= 1;
                 $product->save();
-                $order->total_amount += $product->price + ($product->price * $product->gst) / 100;
+                $order->total_amount += $product->price;
                 $order->save();
                 return response()->json([
                     'status' => true,
@@ -367,11 +365,12 @@ class AdminController extends Controller
             } else {
                 $order = new Order();
                 $order->order_id = Str::upper(Str::random(10));
+                $order->client_id = $request->session()->get('email');
                 $order->products = json_encode([array("product_id" => $request->product_id, "quantity" => 1)]);
                 $product = Product::where('product_id', $request->product_id)->where('client_id', $email)->get()->first();
                 $product->quantity -= 1;
                 $product->save();
-                $order->total_amount = $product->price + ($product->price * $product->gst) / 100;
+                $order->total_amount = $product->price;
                 $order->save();
                 return response()->json([
                     'status' => true,
@@ -406,7 +405,7 @@ class AdminController extends Controller
             $arr = json_decode($order->products);
             $products = array();
             foreach ($arr as $key => $value) {
-                $product = Product::select('product_id', 'name', 'price', 'gst')->where('client_id', $email)->where('product_id', $value->product_id)->get()->first();
+                $product = Product::select('product_id', 'name', 'price')->where('client_id', $email)->where('product_id', $value->product_id)->get()->first();
                 $product->product_quantity = $value->quantity;
                 array_push($products, $product);
             }
@@ -445,7 +444,7 @@ class AdminController extends Controller
                     array_push($data, $value);
                 }
                 $order->products = json_encode($data);
-                $order->total_amount -= $product->price * $quantity + (($product->price * $product->gst) / 100) * $quantity;
+                $order->total_amount -= $product->price * $quantity;
                 $order->save();
                 return response()->json([
                     'status' => true,
@@ -491,12 +490,11 @@ class AdminController extends Controller
                             if ($value->quantity > $request->quantity) {
                                 $product->quantity = $product->quantity + ($value->quantity - $request->quantity);
                                 $price = Product::where(['product_id' => $value->product_id, 'client_id' => session('email')])->get()->first();
-                                $order->total_amount = ($order->total_amount - $value->quantity * $price->price - ($price->price * $price->gst) * ($value->quantity - $request->quantity)) + ($request->quantity * $price->price);
+                                $order->total_amount = $order->total_amount - ($value->quantity * $price->price) + $request->quantity * $price->price;
                             } else {
                                 $product->quantity = $product->quantity - ($request->quantity - $value->quantity);
                                 $price = Product::where(['product_id' => $value->product_id, 'client_id' => session('email')])->get()->first();
-                                $order->total_amount = ($order->total_amount - $value->quantity * $price->price) + ($request->quantity * $price->price) +
-                                    ($price->price * $price->gst) * ($request->quantity - $value->quantity);
+                                $order->total_amount = ($order->total_amount - $value->quantity * $price->price) + $request->quantity * $price->price;
                             }
                             $product->save();
                             $value->quantity = $request->quantity;
@@ -607,10 +605,11 @@ class AdminController extends Controller
             $arr = json_decode($order->products);
             $data['order'] = $order;
             $data['ordercount'] = Order::where('client_id', $email)->get()->count();
+            $data['gst'] = GST::where('client_id', $email)->get();
             $ar = [];
             foreach ($arr as $key => $value) {
-                $product = Product::select('name', 'price', 'gst')->where('client_id', $email)->where('product_id', $value->product_id)->get()->first();
-                $prod = array('name' => $product->name, 'price' => $product->price, 'quantity' => $value->quantity, 'gst' => $product->gst);
+                $product = Product::select('name', 'price')->where('client_id', $email)->where('product_id', $value->product_id)->get()->first();
+                $prod = array('name' => $product->name, 'price' => $product->price, 'quantity' => $value->quantity);
                 array_push($ar, $prod);
             }
             $data['products'] = $ar;
@@ -636,12 +635,13 @@ class AdminController extends Controller
         return view('index', $data);
     }
 
-    public function changeStatusOfOrder(Request $request)
+    public function changeStatusOfOrder(Request $request,$gst)
     {
         $email = $request->session()->get('email');
         $order = Order::orderby('id', 'desc')->where('client_id', $email)->where('status', 0)->get()->first();
         if ($order) {
             $order->status = 1;
+            $order->total_amount += (($order->total_amount * $gst) / 100);
             $order->save();
             return response()->json([
                 'status' => true,
@@ -740,6 +740,52 @@ class AdminController extends Controller
             return response()->json([
                 'status' => false,
             ]);
+        }
+    }
+
+    public function gstonbill(Request $request)
+    {
+        $gst = GST::orderby('id', 'desc')->where(['client_id' => $request->session()->get('email')])->get();
+        return view('gst-on-bill', ['gst' => $gst]);
+    }
+
+    public function addgst(Request $request)
+    {
+        $valid = Validator::make($request->all(), [
+            'gst' => "required",
+        ]);
+
+        if ($valid->passes()) {
+            $gst = new GST();
+            $gst->client_id = $request->session()->get('email');
+            $gst->gst = $request->gst;
+            if ($request->amount) {
+                $gst->amount = $request->amount;
+            }
+            if ($request->condition) {
+                $gst->condition = $request->condition;
+            }
+            $gst->save();
+            return response()->json([
+                'status' => true,
+                'msg' => "GST Added Successfully",
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => $valid->errors()->all(),
+            ]);
+        }
+    }
+
+    public function deleteGST(Request $request, $id)
+    {
+        $gst = GST::where(['client_id' => $request->session()->get('email'), 'id' => $id])->get()->first();
+        if ($gst) {
+            $gst->delete();
+            return redirect('/gst-on-bill')->with(['status' => "success", 'msg' => "GST Deleted Successfully!!"]);
+        } else {
+            return redirect('/gst-on-bill')->with(['status' => "danger", 'msg' => "Something Went Wrong!!"]);
         }
     }
 
