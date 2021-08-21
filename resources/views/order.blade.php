@@ -261,6 +261,7 @@
           });
           }else{
             $('#order_data').html("No Product Found");
+            $('#invoice').attr('href',`{{ url('/order/#') }}`);
           }
         }else{
           $('#order_data').html(data.msg);
