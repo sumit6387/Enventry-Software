@@ -399,7 +399,6 @@ class AdminController extends Controller
             if ($order->products == null) {
                 return response()->json([
                     'status' => false,
-                    'order' => $order,
                     'msg' => "No Products Found",
                     'order_id' => $order_id,
                 ]);

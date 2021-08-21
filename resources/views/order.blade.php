@@ -266,8 +266,6 @@
           $('#order_data').html(data.msg);
           $('#invoice').attr('href',`{{ url('/order/#') }}`);
         }
-        
-        
       });
     }
     getOrders();
