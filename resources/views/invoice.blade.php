@@ -129,6 +129,12 @@
         </div>
     @include('layouts.js-link')
     <script>
+        $(document).ready(()=>{
+            $.get(`{{ url('/balance/'.$totalAmount) }}`,(data,status)=>{
+                console.log(data);
+                
+            });
+        });
             $('#printSlip').click(()=>{
                 $.get(`{{ url('/changeStatusOfOrder/'.$gs) }}`,(data,status)=>{
                     if(data.status){
@@ -142,7 +148,7 @@
             $('#discount').blur(()=>{
                 var disc = $('#discount').val();
                 var total = {{ $totalAmount }};
-                 finaltotal = total- ((parseInt(total) * disc)/100) ;
+                 finaltotal = total- ((parseInt(total) * disc)/100);
                  var order_id = `{{ Request::segment(2) }}`;
                  $.get(`{{ url('/updateTotalBalance/') }}/${order_id}/${finaltotal}`,(data,status)=>{
                     $('#total').html(finaltotal.toFixed(2));

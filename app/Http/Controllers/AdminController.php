@@ -636,13 +636,12 @@ class AdminController extends Controller
         return view('index', $data);
     }
 
-    public function changeStatusOfOrder(Request $request, $gst)
+    public function changeStatusOfOrder(Request $request)
     {
         $email = $request->session()->get('email');
         $order = Order::orderby('id', 'desc')->where('client_id', $email)->where('status', 0)->get()->first();
         if ($order) {
             $order->status = 1;
-            $order->total_amount += (($order->total_amount * $gst) / 100);
             $order->save();
             $orderhistory = new OrderHistory();
             $arr = json_decode($order->products);
@@ -790,6 +789,22 @@ class AdminController extends Controller
             return redirect('/gst-on-bill')->with(['status' => "success", 'msg' => "GST Deleted Successfully!!"]);
         } else {
             return redirect('/gst-on-bill')->with(['status' => "danger", 'msg' => "Something Went Wrong!!"]);
+        }
+    }
+
+    public function balance(Request $request, $balance)
+    {
+        $order = Order::where(['client_id' => $request->session()->get('email'), 'status' => 0])->get()->first();
+        if ($order) {
+            $order->total_amount = $balance;
+            $order->save();
+            return response()->json([
+                'status' => true,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+            ]);
         }
     }
 
