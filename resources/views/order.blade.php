@@ -207,7 +207,7 @@
       $.get(`{{ url('/getorders') }}`,(data,status)=>{
         if(data.order_id){
           var order_id = data.order_id;
-          if(data.status){
+          if(data.status && data.order.customer){
           var url = `{{ url('/invoice/') }}/${order_id}`;
           }else{
             var url = `{{ url('/order/#') }}`;

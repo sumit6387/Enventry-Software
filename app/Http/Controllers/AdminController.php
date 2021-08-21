@@ -399,6 +399,7 @@ class AdminController extends Controller
             if ($order->products == null) {
                 return response()->json([
                     'status' => false,
+                    'order' => $order,
                     'msg' => "No Products Found",
                     'order_id' => $order_id,
                 ]);
@@ -412,6 +413,7 @@ class AdminController extends Controller
             }
             return response()->json([
                 'status' => true,
+                'order' => $order,
                 'data' => $products,
                 'order_id' => $order->order_id,
             ]);
