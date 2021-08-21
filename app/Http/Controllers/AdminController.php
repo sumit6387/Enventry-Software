@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Customer;
 use App\Models\GST;
 use App\Models\Order;
+use App\Models\OrderHistory;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -635,7 +636,7 @@ class AdminController extends Controller
         return view('index', $data);
     }
 
-    public function changeStatusOfOrder(Request $request,$gst)
+    public function changeStatusOfOrder(Request $request, $gst)
     {
         $email = $request->session()->get('email');
         $order = Order::orderby('id', 'desc')->where('client_id', $email)->where('status', 0)->get()->first();
@@ -643,6 +644,22 @@ class AdminController extends Controller
             $order->status = 1;
             $order->total_amount += (($order->total_amount * $gst) / 100);
             $order->save();
+            $orderhistory = new OrderHistory();
+            $arr = json_decode($order->products);
+            $product = '';
+            foreach ($arr as $key => $value) {
+                $name = Product::where(['client_id' => $email, 'product_id' => $value->product_id])->get()->first()->name;
+                $product = $product . $name . ",";
+            }
+            $customer = Customer::where(['customer_id' => $order->customer, "client_id" => $email])->get()->first();
+            $orderhistory = new OrderHistory();
+            $orderhistory->order_id = $order->order_id;
+            $orderhistory->client_id = $email;
+            $orderhistory->customer_name = $customer->name;
+            $orderhistory->customer_mobile_no = $customer->mobile_no;
+            $orderhistory->products = $product;
+            $orderhistory->total_amount = $order->total_amount;
+            $orderhistory->save();
             return response()->json([
                 'status' => true,
             ]);
@@ -709,21 +726,8 @@ class AdminController extends Controller
     public function orderHistory(Request $request)
     {
         $email = $request->session()->get('email');
-        $order = Order::orderby('id', 'desc')->where('status', 1)->where('client_id', $email)->get();
-        $products = array();
-        if ($order) {
-            foreach ($order as $key => $value) {
-                $ar = json_decode($value->products);
-                $value->customer_name = Customer::select('name')->where('customer_id', $value->customer)->where('client_id', $email)->get()->first()->name;
-                if ($ar) {
-                    foreach ($ar as $key => $prod) {
-                        $product = ["name" => Product::select('name')->where('product_id', $prod->product_id)->where('client_id', $email)->get()->first()->name];
-                        \array_push($products, $product);
-                    }
-                }
-                $value->product_list = $products;
-            }
-        }
+        $order = OrderHistory::orderby('id', 'desc')->where('client_id', $email)->get();
+
         return view('orderhistory', ["orders" => $order]);
     }
 

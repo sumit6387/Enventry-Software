@@ -30,6 +30,7 @@
                     <th>Sr No.</th>
                     <th>OrderID</th>
                     <th>Customer Name</th>
+                    <th>Customer Mobile No</th>
                     <th>Products</th>
                     <th>Total Amount</th>
                 </tr>
@@ -40,11 +41,8 @@
                             <td>{{ $key+1 }}</td>
                             <td>{{ $order->order_id }}</td>
                             <td>{{ $order->customer_name }}</td>
-                            <td>
-                              @foreach ($order->product_list as $product)
-                                  {{ $product['name'] }},
-                              @endforeach
-                            </td>
+                            <td>{{ $order->customer_mobile_no }}</td>
+                            <td>{{ $order->products }}</td>
                             <td>₹ {{ $order->total_amount }}</td>
                           </tr>
                       @endforeach
