@@ -315,10 +315,10 @@
         if(data.status){
           $('#msg').hide();
           console.log(data);
-          
           getOrders();
           
       });
+    }
     }
 </script>
 
