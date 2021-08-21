@@ -136,7 +136,7 @@
             });
         });
             $('#printSlip').click(()=>{
-                $.get(`{{ url('/changeStatusOfOrder/'.$gs) }}`,(data,status)=>{
+                $.get(`{{ url('/changeStatusOfOrder/') }}`,(data,status)=>{
                     if(data.status){
                         window.print();
                         setTimeout(() => {
