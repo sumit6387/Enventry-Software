@@ -316,9 +316,8 @@
           $('#msg').hide();
           console.log(data);
           getOrders();
-          
+        }
       });
-    }
     }
 </script>
 
