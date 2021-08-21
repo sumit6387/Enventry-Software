@@ -89,11 +89,11 @@
                                         if($amount > $value->amount){
                                             $gs = $value->gst;
                                         }
-                                    }else if($value->condtion == "Equal"){
+                                    }else if($value->condition == "Equal"){
                                         if($amount == $value->amount){
                                             $gs = $value->gst;
                                         }
-                                    }else if($value->condtion == "Less"){
+                                    }else if($value->condition == "Less"){
                                         if($amount < $value->amount){
                                             $gs = $value->gst;
                                         }
