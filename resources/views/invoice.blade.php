@@ -93,7 +93,7 @@
                                         if($amount == $value->amount){
                                             $gs = $value->gst;
                                         }
-                                    }else if($value->condtion === "Less"){
+                                    }else if($value->condtion == "Less"){
                                         if($amount < $value->amount){
                                             $gs = $value->gst;
                                         }
