@@ -264,6 +264,7 @@
           }
         }else{
           $('#order_data').html(data.msg);
+          $('#invoice').attr('href',`{{ url('/order/#') }}`);
         }
         
         
@@ -317,20 +318,7 @@
           console.log(data);
           
           getOrders();
-          st = `<div class="col-md-6">
-                <p><b>Customer ID</b> : <span id="cust_id">${customer_id}</span></p>
-                <p><b>Name : </b><span id="cust_name">${data.customer.name}</span></p>
-                <p><b>Email : </b><span id="cust_email">${data.customer.email}</span></p>
-              </div>
-              <div class="col-md-6">
-                <p><b>Mobile No : </b><span id="cust_no">${data.customer.mobile_no}</span></p>
-                <p><b>Address : </b><span id="cust_address">${data.customer.address}</span></p>
-                <p><b>Pincode : </b><span id="cust_pincode">${data.customer.pincode}</span></p>
-              </div>`;
-              $('#customer_detail').html(st);
-        }else{
-          alert("Select User Again")
-        }
+          
       });
     }
 </script>
