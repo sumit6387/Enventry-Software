@@ -115,7 +115,7 @@
                         <p><b>Discount  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span><input type="text" id="discount" style="width: 30px;"> %</span></p>
                         <hr>
                         <p><b>GST ({{ $gs }}%)  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;₹ {{ $gst }}</p><hr>
-                        <p><b>Total   </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ <span id="total">{{ $totalAmount }}</span></p>
+                        <p><b>Total   </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ <span id="total">{{ number_format($totalAmount,2)  }}</span></p>
                         <hr>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
                  finaltotal = total- ((parseInt(total) * disc)/100) ;
                  var order_id = `{{ Request::segment(2) }}`;
                  $.get(`{{ url('/updateTotalBalance/') }}/${order_id}/${finaltotal}`,(data,status)=>{
-                    $('#total').html(finaltotal);
+                    $('#total').html(finaltotal.toFixed(2));
                 });
             });
     </script>
