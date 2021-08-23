@@ -124,7 +124,13 @@
                         <h6>Goods  once sold will not be taken back .Only exchanged within 07 days.</h6>
                     </div>
                     <div class="col-md-6">
-                        Signed By {{ $user->company_name }}
+                        Signed By <b>{{ $user->company_name }}</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        &nbsp;&nbsp;&nbsp;_____________________
                     </div>
                 </div>
         </div>
