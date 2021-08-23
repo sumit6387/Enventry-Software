@@ -313,6 +313,7 @@ class AdminController extends Controller
         $email = $request->session()->get('email');
         $data['products'] = Product::select(['categories.category as category_name', 'brands.brand_name', 'products.*'])
             ->where('products.client_id', $email)
+            ->where('products.quantity',">=",1)
             ->join('brands', 'products.brand', '=', 'brands.id')
             ->join('categories', 'products.category', '=', 'categories.id')
             ->get();
