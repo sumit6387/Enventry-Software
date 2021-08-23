@@ -365,7 +365,7 @@ class AdminController extends Controller
                 ]);
             } else {
                 $order = new Order();
-                $order->order_id = Str::upper(Str::random(10));
+                $order->order_id = rand(11111111, 99999999);
                 $order->client_id = $request->session()->get('email');
                 $order->products = json_encode([array("product_id" => $request->product_id, "quantity" => 1)]);
                 $product = Product::where('product_id', $request->product_id)->where('client_id', $email)->get()->first();
@@ -581,7 +581,7 @@ class AdminController extends Controller
                 ]);
             } else {
                 $new = new Order();
-                $new->order_id = Str::upper(Str::random(10));
+                $new->order_id = rand(11111111, 99999999);
                 $new->customer = $customer_id;
                 $new->client_id = $email;
                 $new->save();
