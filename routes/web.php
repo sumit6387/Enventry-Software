@@ -28,6 +28,9 @@ Route::group(['middleware' => ["CheckUser"]], function () {
     Route::group(['middleware' => ['CheckAdmin']], function () {
         Route::get('/clients', [AdminController::class, 'clients']);
         Route::post('/client', [AdminController::class, 'addclient']);
+        Route::get('/delete-client/{client_id}', [AdminController::class, 'deleteClient']);
+        Route::get('/edit-client/{client_id}', [AdminController::class, 'editClient']);
+        Route::post('/editClient', [AdminController::class, 'editClientProcess']);
     });
 
     Route::get('/brands', [AdminController::class, 'showbrand']);

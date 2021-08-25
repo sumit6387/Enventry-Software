@@ -313,7 +313,7 @@ class AdminController extends Controller
         $email = $request->session()->get('email');
         $data['products'] = Product::select(['categories.category as category_name', 'brands.brand_name', 'products.*'])
             ->where('products.client_id', $email)
-            ->where('products.quantity',">=",1)
+            ->where('products.quantity', ">=", 1)
             ->join('brands', 'products.brand', '=', 'brands.id')
             ->join('categories', 'products.category', '=', 'categories.id')
             ->get();
@@ -807,6 +807,64 @@ class AdminController extends Controller
             return response()->json([
                 'status' => false,
             ]);
+        }
+    }
+
+    public function deleteClient($client_id)
+    {
+        $client = User::where('id', $client_id)->get()->first();
+        if ($client) {
+            $client->delete();
+            return redirect('/clients')->with(['status' => 'success', 'msg' => "Client Deleted Successfully!!"]);
+        } else {
+            return redirect('/clients')->with(['status' => 'danger', 'msg' => "Something Went Wrong"]);
+        }
+    }
+
+    public function editClient($client_id)
+    {
+        $client = User::where('id', $client_id)->get()->first();
+        if ($client) {
+            return view('editclient', ['client' => $client]);
+        } else {
+            return redirect('/clients')->with(['status' => 'danger', 'msg' => "Something Went Wrong"]);
+        }
+    }
+    public function editClientProcess(Request $request)
+    {
+        $valid = Validator::make($request->all(), [
+            'name' => "required",
+            'email' => "required",
+            'company_name' => "required",
+        ]);
+
+        if ($valid->passes()) {
+            $client = User::where('id', $request->client_id)->get()->first();
+            if ($client) {
+                $client->name = $request->name;
+                $client->email = $request->email;
+                $client->company_name = $request->company_name;
+                if ($request->file('logo')) {
+                    $extension = $request->file('logo')->getClientOriginalExtension();
+                    $filename = rand(11111111, 999999999) . "." . $extension;
+                    $path = $request->file('logo')->move(public_path('/client/logo/'), $filename);
+                    $url1 = url('public/client/logo/' . $filename);
+                    $client->logo = $url1;
+                }
+                if ($request->gst_no) {
+                    $client->gst_no = $request->gst_no;
+                }
+                $client->save();
+                return redirect('/edit-client/' . $request->client_id)->with(['status' => 'success', 'msg' => "Client Detail Updated Successfully!!"]);
+            } else {
+                return redirect('/edit-client/' . $request->client_id)->with(['status' => 'danger', 'msg' => "Something Went Wrong"]);
+            }
+        } else {
+            $error = '';
+            foreach ($valid->errors()->all() as $key => $value) {
+                $error = $error . $value;
+            }
+            return redirect('/edit-client/' . $request->client_id)->with(['status' => "danger", 'msg' => $error]);
         }
     }
 

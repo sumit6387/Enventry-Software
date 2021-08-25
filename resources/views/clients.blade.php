@@ -41,7 +41,7 @@
                             <td>{{ $key+1 }}</td>
                             <td>{{ $client->name }}</td>
                             <td>{{ $client->email }}</td>
-                            <td><button class="btn btn-primary mx-2">Edit</button><span><button class="btn btn-danger">Delete</button></span></td>
+                            <td><a href="{{ url('/edit-client/'.$client->id) }}" class="btn btn-primary mx-2">Edit</a><span><a href="{{ url('/delete-client/'.$client->id) }}" class="btn btn-danger">Delete</a></span></td>
                           </tr>
                       @endforeach
                 </tbody>
