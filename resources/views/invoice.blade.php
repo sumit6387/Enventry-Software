@@ -129,7 +129,7 @@
                             $in_words = numfmt_format($fmt, $number);
 
                             echo($in_words);
-                        @endphp</span> Rs</p>
+                        @endphp</span> rupees</p>
                     </div>
                 </div>
                 <div class="row">
