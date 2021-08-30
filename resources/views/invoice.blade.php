@@ -29,6 +29,7 @@
                         <br>
                         <p>PAN NO : <b>AGCPT6740J</b> </p>
                         <p>GST NO : <b>{{ $user->gst_no }}</b></p>
+                        <p>Mobile NO : <b>{{ $user->gst_no }}</b></p>
                     </div>
                 </div>
                 <br>
@@ -117,6 +118,18 @@
                         <p><b>GST ({{ $gs }}%)  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;₹ {{ $gst }}</p><hr>
                         <p><b>Total   </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ <span id="total">{{ number_format($totalAmount,2)  }}</span></p>
                         <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><b>Amount in words </b> :- @php
+                            $number = $totalAmount;
+                            $locale = 'en_US';
+                            $fmt = numfmt_create($locale, NumberFormatter::SPELLOUT);
+                            $in_words = numfmt_format($fmt, $number);
+
+                            echo($in_words);
+                        @endphp</p>
                     </div>
                 </div>
                 <div class="row">
