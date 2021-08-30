@@ -122,8 +122,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <p><b>Amount in words </b> :- @php
-                            $number = $totalAmount;
+                        <p><b>Total Amount in words </b> :- @php
+                            $number = intval($totalAmount);
                             $locale = 'en_US';
                             $fmt = numfmt_create($locale, NumberFormatter::SPELLOUT);
                             $in_words = numfmt_format($fmt, $number);
@@ -137,7 +137,7 @@
                         <h6>Goods  once sold will not be taken back .Only exchanged within 07 days.</h6>
                     </div>
                     <div class="col-md-6" style="padding-left: 9%;">
-                        Signed By <b>{{ $user->company_name }}</b>
+                        For <b>{{ $user->company_name }}</b>
                     </div>
                 </div>
                 <div class="row">
