@@ -29,7 +29,9 @@
                         <br>
                         <p>PAN NO : <b>AGCPT6740J</b> </p>
                         <p>GST NO : <b>{{ $user->gst_no }}</b></p>
-                        <p>Mobile NO : <b>{{ $user->gst_no }}</b></p>
+                        <p>Mobile NO : <b>@if (isset($user->mobile_no))
+                            {{ $user->mobile_no }}
+                        @endif</b></p>
                     </div>
                 </div>
                 <br>
