@@ -79,9 +79,14 @@
                         <label for="price">Price </label>
                         <input type="text" name="price" class="form-control" id="exampleInputEmail1" placeholder="Enter Price" value="{{ $product->price }}">
                       </div>
+                      
                       <div class="form-group">
                         <label for="quantity">Quantity </label>
                         <input type="text" name="quantity" class="form-control" id="exampleInputEmail1" placeholder="Enter Quantity" value="{{ $product->quantity }}">
+                      </div>
+                      <div class="form-group">
+                        <label for="gst">GST (%) </label>
+                        <input type="text" name="gst" class="form-control" id="exampleInputEmail1" placeholder="Enter GST in %" value="{{ $product->gst }}">
                       </div>
                       <div class="form-group">
                         <button type="submit" class="btn btn-primary">Submit</button>

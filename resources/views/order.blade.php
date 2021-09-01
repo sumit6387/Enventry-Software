@@ -205,6 +205,8 @@
 
     function getOrders(){
       $.get(`{{ url('/getorders') }}`,(data,status)=>{
+        console.log(data);
+        
         if(data.order_id){
           var order_id = data.order_id;
           if(data.status && data.order.customer){
@@ -221,11 +223,13 @@
             var amount = 0;
               if(data.data.length > 0){
                 (data.data).forEach(element => {
-                amount += (parseInt(element.price) *element.product_quantity);
+                amount += (parseInt(element.price) *element.product_quantity)+(parseInt(element.price) *element.product_quantity) *element.gst/100;
+                console.log(amount);
+                var amount_with_gst = (parseInt(element.price) *element.product_quantity)+(parseInt(element.price) *element.product_quantity) *element.gst/100;
                 st += `<tr>
                             <td>${element.name}</td>
                             <td><input type="number" style="width:50px;" class="changequantity" data-id="${element.product_id}" value="${element.product_quantity}"></td>
-                            <td>₹ ${element.price}</td>
+                            <td>₹ ${amount_with_gst}</td>
                             <td><i class="fa fa-trash deleteItem" style="pointer:cursor;" data-id="${element.product_id}" aria-hidden="true"></i></td>
                           </tr>`;
               });

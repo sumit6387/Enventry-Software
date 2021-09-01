@@ -32,6 +32,11 @@
                     <th>Sr No.</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Company Name</th>
+                    <th>Logo</th>
+                    <th>GST No</th>
+                    <th>Mobile No</th>
+                    <th>Address</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -41,6 +46,11 @@
                             <td>{{ $key+1 }}</td>
                             <td>{{ $client->name }}</td>
                             <td>{{ $client->email }}</td>
+                            <td>{{ $client->company_name }}</td>
+                            <td><a href="{{ $client->logo }}" target="_blank">View</a></td>
+                            <td>{{ $client->gst_no }}</td>
+                            <td>{{ $client->mobile_no }}</td>
+                            <td>{{ $client->address }}</td>
                             <td><a href="{{ url('/edit-client/'.$client->id) }}" class="btn btn-primary mx-2">Edit</a><span><a href="{{ url('/delete-client/'.$client->id) }}" class="btn btn-danger">Delete</a></span></td>
                           </tr>
                       @endforeach
@@ -90,6 +100,14 @@
             <div class="form-group">
               <label for="exampleInputEmail1">GST No.</label>
               <input type="text" name="gst_no" class="form-control" id="exampleInputEmail1" placeholder="Enter GST no">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Mobile No.</label>
+              <input type="text" name="mobile_no" class="form-control" id="exampleInputEmail1" placeholder="Enter Mobile No">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Address</label>
+              <textarea name="address" placeholder="Enter Address......" id="" class="form-control" cols="20" rows="10"></textarea>
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-primary">Submit</button>

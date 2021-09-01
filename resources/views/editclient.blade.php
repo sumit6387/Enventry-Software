@@ -52,6 +52,14 @@
                     <input type="text" name="gst_no" class="form-control" value="{{ $client->gst_no }}" id="exampleInputEmail1" placeholder="Enter GST no">
                   </div>
                   <div class="form-group">
+                    <label for="exampleInputEmail1">Mobile No.</label>
+                    <input type="text" name="mobile_no" class="form-control" id="exampleInputEmail1" placeholder="Enter Mobile No" value="{{ $client->mobile_no }}">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Address</label>
+                    <textarea name="address" placeholder="Enter Address......" id="" class="form-control" cols="20" rows="10">{{ $client->address }}</textarea>
+                  </div>
+                  <div class="form-group">
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </div>
                   

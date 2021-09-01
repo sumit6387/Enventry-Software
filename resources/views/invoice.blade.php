@@ -24,9 +24,18 @@
                     <div class="col-md-4">
                         
                         <p><b>{{ $user->company_name }}</b></p>
-                        <p>15-16, Vishwakarma complex.</p>
-                        <p>Shastripuram road Sikandra Agra – 282007</p>
-                        <br>
+                        @php
+                        $add = '';
+                            if(isset($user->address)){
+                                $arr = explode(',',$user->address);
+                                foreach ($arr as $key => $value) {
+                                    $add = "<p>".$add.$value.",</p>";
+                                }
+                            }
+                        @endphp
+                        @php
+                            echo $add;
+                        @endphp
                         <p>PAN NO : <b>AGCPT6740J</b> </p>
                         <p>GST NO : <b>{{ $user->gst_no }}</b></p>
                         <p>Mobile NO : <b>@if (isset($user->mobile_no))
@@ -64,7 +73,9 @@
                             <tr>
                                 <th>Product</th>
                                 <th>Quantity</th>
+                                <th>GST</th>
                                 <th>Price</th>
+                                <th>Total Price</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,36 +86,23 @@
                                 <tr>
                                     <td>{{ $product['name'] }} </td>
                                     <td>{{ $product['quantity'] }}</td>
-                                    <td> ₹ {{ $product['price']  }} * {{ $product['quantity']}}   =  ₹ {{ $product['price'] * $product['quantity']}}</td>
+                                    <td>@if ($product['gst'])
+                                        {{ $product['gst'] }}
+                                        @else
+                                        0
+                                    @endif% </td>
+                                    <td> ₹ {{ $product['price']}}</td>
+                                    <td>₹ {{ $product['price']  }} * {{ $product['quantity'] }} + ₹ {{ $product['price']*$product['quantity']*$product['gst']/100 }} =₹ {{ $product['price']*$product['quantity'] +($product['price']*$product['quantity']*$product['gst']/100) }} </td>
                                     @php
-                                        $amount += $product['price'] * $product['quantity'] ;
+                                        $amount += $product['price']*$product['quantity'] +($product['price']*$product['quantity']*$product['gst']/100) ;
                                     @endphp
                                 </tr>
                             @endforeach
                             @php
                             $gs = 0;
-                            foreach ($gst as $key => $value) {
-                                if($gs == 0 &&$value->amount == null){
-                                    $gs = $value->gst;
-                                }
-                                if($value->amount != null && $value->condition !=null){
-                                    if($value->condition =="Greater"){
-                                        if($amount > $value->amount){
-                                            $gs = $value->gst;
-                                        }
-                                    }else if($value->condition == "Equal"){
-                                        if($amount == $value->amount){
-                                            $gs = $value->gst;
-                                        }
-                                    }else if($value->condition == "Less"){
-                                        if($amount < $value->amount){
-                                            $gs = $value->gst;
-                                        }
-                                    }
-                                }
-                            }
                                 $gst = ($amount * $gs)/100;
                                 $totalAmount = $amount+$gst;
+                                // dd($totalAmount);
                             @endphp
                             
                         </tbody>
@@ -117,7 +115,6 @@
                         <hr>
                         <p><b>Discount  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span><input type="text" id="discount" style="width: 30px;"> %</span></p>
                         <hr>
-                        <p><b>GST ({{ $gs }}%)  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;₹ {{ $gst }}</p><hr>
                         <p><b>Total   </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ <span id="total">{{ number_format($totalAmount,2)  }}</span></p>
                         <hr>
                     </div>
@@ -155,7 +152,6 @@
         $(document).ready(()=>{
             $.get(`{{ url('/balance/'.$totalAmount) }}`,(data,status)=>{
                 console.log(data);
-                
             });
         });
             $('#printSlip').click(()=>{
