@@ -370,7 +370,22 @@ class AdminController extends Controller
                 ]);
             } else {
                 $order = new Order();
+                $no_of_orders = Order::where(['status' => 1, 'client_id' => $request->session()->get('email')])->count();
+                if ($no_of_orders < 10) {
+                    $order_serial_id = "0000" . ($no_of_orders + 1);
+                } else if ($no_of_orders < 100) {
+                    $order_serial_id = "000" . ($no_of_orders + 1);
+                } else if ($no_of_orders < 1000) {
+                    $order_serial_id = "00" . ($no_of_orders + 1);
+                } else if ($no_of_orders < 10000) {
+                    $order_serial_id = "0" . ($no_of_orders + 1);
+                } else if ($no_of_orders < 100000) {
+                    $order_serial_id = ($no_of_orders + 1);
+                } else {
+                    $order_serial_id = "000000" . ($no_of_orders + 1);
+                }
                 $order->order_id = rand(11111111, 99999999);
+                $order->order_serial_id = $order_serial_id;
                 $order->client_id = $request->session()->get('email');
                 $order->products = json_encode([array("product_id" => $request->product_id, "quantity" => 1)]);
                 $product = Product::where('product_id', $request->product_id)->where('client_id', $email)->get()->first();
@@ -589,6 +604,21 @@ class AdminController extends Controller
             } else {
                 $new = new Order();
                 $new->order_id = rand(11111111, 99999999);
+                $no_of_orders = Order::where(['status' => 1, 'client_id' => $request->session()->get('email')])->count();
+                if ($no_of_orders < 10) {
+                    $order_serial_id = "0000" . ($no_of_orders + 1);
+                } else if ($no_of_orders < 100) {
+                    $order_serial_id = "000" . ($no_of_orders + 1);
+                } else if ($no_of_orders < 1000) {
+                    $order_serial_id = "00" . ($no_of_orders + 1);
+                } else if ($no_of_orders < 10000) {
+                    $order_serial_id = "0" . ($no_of_orders + 1);
+                } else if ($no_of_orders < 100000) {
+                    $order_serial_id = ($no_of_orders + 1);
+                } else {
+                    $order_serial_id = "000000" . ($no_of_orders + 1);
+                }
+                $new->order_serial_id = $order_serial_id;
                 $new->customer = $customer_id;
                 $new->client_id = $email;
                 $new->save();
@@ -651,7 +681,6 @@ class AdminController extends Controller
         if ($order) {
             $order->status = 1;
             $order->save();
-            $orderhistory = new OrderHistory();
             $arr = json_decode($order->products);
             $product = '';
             foreach ($arr as $key => $value) {
@@ -661,6 +690,7 @@ class AdminController extends Controller
             $customer = Customer::where(['customer_id' => $order->customer, "client_id" => $email])->get()->first();
             $orderhistory = new OrderHistory();
             $orderhistory->order_id = $order->order_id;
+            $orderhistory->order_serial_id = $order->order_serial_id;
             $orderhistory->client_id = $email;
             $orderhistory->customer_name = $customer->name;
             $orderhistory->customer_mobile_no = $customer->mobile_no;

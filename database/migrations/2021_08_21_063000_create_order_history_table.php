@@ -16,6 +16,7 @@ class CreateOrderHistoryTable extends Migration
         Schema::create('order_history', function (Blueprint $table) {
             $table->id();
             $table->string('order_id');
+            $table->string('order_serial_id');
             $table->string('client_id');
             $table->string('customer_name');
             $table->string('customer_mobile_no')->nullable();

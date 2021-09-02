@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->string('client_id');
             $table->string('order_id');
+            $table->string('order_serial_id');
             $table->longText('products')->nullable();
             $table->longText('customer')->nullable();
             $table->longText('status')->default(0);
