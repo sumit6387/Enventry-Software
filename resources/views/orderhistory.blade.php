@@ -39,7 +39,11 @@
                       @foreach ($orders as $key=>$order)
                           <tr>
                             <td>{{ $key+1 }}</td>
-                            <td>{{ $order->order_id }}</td>
+                            <td>@if ($order->order_serial_id)
+                              {{ $order->order_serial_id }}
+                              @else
+                              {{ $order->order_id }}
+                            @endif</td>
                             <td>{{ $order->customer_name }}</td>
                             <td>{{ $order->customer_mobile_no }}</td>
                             <td>{{ $order->products }}</td>
