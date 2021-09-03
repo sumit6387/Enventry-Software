@@ -28,7 +28,7 @@
                 <thead>
                 <tr>
                     <th>Sr No.</th>
-                    <th>OrderID</th>
+                    <th>Invoice No</th>
                     <th>Customer Name</th>
                     <th>Customer Mobile No</th>
                     <th>Products</th>

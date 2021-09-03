@@ -768,7 +768,6 @@ class AdminController extends Controller
     {
         $email = $request->session()->get('email');
         $order = OrderHistory::orderby('id', 'desc')->where('client_id', $email)->get();
-
         return view('orderhistory', ["orders" => $order]);
     }
 
