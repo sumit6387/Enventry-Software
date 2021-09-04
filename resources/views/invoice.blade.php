@@ -70,7 +70,7 @@
                 </div>
                 <div class="row">
                     <table class="table">
-                        <thead style="background-color:rgb(173, 170, 170);color:black;">
+                        <thead style="background-color:rgb(231, 226, 226);color:black;">
                             <tr>
                                 <th>Product</th>
                                 <th>Quantity</th>
