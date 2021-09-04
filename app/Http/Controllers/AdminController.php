@@ -728,6 +728,7 @@ class AdminController extends Controller
             $newClient->company_name = $request->company_name;
             $newClient->mobile_no = $request->mobile_no;
             $newClient->address = $request->address;
+            $newClient->website = $request->website;
             if ($request->file('logo')) {
                 $extension = $request->file('logo')->getClientOriginalExtension();
                 $filename = rand(11111111, 999999999) . "." . $extension;
@@ -887,6 +888,9 @@ class AdminController extends Controller
                 $client->company_name = $request->company_name;
                 $client->mobile_no = $request->mobile_no;
                 $client->address = $request->address;
+                if ($request->website) {
+                    $client->website = $request->website;
+                }
                 if ($request->file('logo')) {
                     $extension = $request->file('logo')->getClientOriginalExtension();
                     $filename = rand(11111111, 999999999) . "." . $extension;

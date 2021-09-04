@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('gst_no')->nullable();
             $table->string('mobile_no')->nullable();
             $table->longText('address')->nullable();
+            $table->longText('website')->nullable();
             $table->string('role')->default("Client");
             $table->timestamps();
         });

@@ -122,12 +122,12 @@
                 <div class="row">
                     <div class="col-md-6">
                         <p><b>Total Amount in words </b> :- <span id="amount_in_words"> @php
-                            $number = intval($totalAmount);
-                            $locale = 'en_US';
-                            $fmt = numfmt_create($locale, NumberFormatter::SPELLOUT);
-                            $in_words = numfmt_format($fmt, $number);
+                            // $number = intval($totalAmount);
+                            // $locale = 'en_US';
+                            // $fmt = numfmt_create($locale, NumberFormatter::SPELLOUT);
+                            // $in_words = numfmt_format($fmt, $number);
 
-                            echo($in_words);
+                            // echo($in_words);
                         @endphp</span> rupees</p>
                     </div>
                 </div>
@@ -140,7 +140,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        @if (isset($user->website))
+                            <p>For online purchases please visit our website <b>{{ $user->website }}.</b><br> And get free home delivery.</p>
+                            
+                        @endif
+                    </div>
                     <div class="col-md-6" style="padding-left: 9%;">
                         <br>
                         &nbsp;&nbsp;&nbsp;_____________________

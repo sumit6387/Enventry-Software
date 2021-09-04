@@ -37,6 +37,7 @@
                     <th>GST No</th>
                     <th>Mobile No</th>
                     <th>Address</th>
+                    <th>Website</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -51,6 +52,7 @@
                             <td>{{ $client->gst_no }}</td>
                             <td>{{ $client->mobile_no }}</td>
                             <td>{{ $client->address }}</td>
+                            <td><a href="{{ $client->website }}" target="_blank">link</a></td>
                             <td><a href="{{ url('/edit-client/'.$client->id) }}" class="btn btn-primary mx-2">Edit</a><span><a href="{{ url('/delete-client/'.$client->id) }}" class="btn btn-danger">Delete</a></span></td>
                           </tr>
                       @endforeach
@@ -100,6 +102,10 @@
             <div class="form-group">
               <label for="exampleInputEmail1">GST No.</label>
               <input type="text" name="gst_no" class="form-control" id="exampleInputEmail1" placeholder="Enter GST no">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Website Link <small>If Any</small>.</label>
+              <input type="text" name="website" class="form-control" id="exampleInputEmail1" placeholder="Enter Website Link">
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Mobile No.</label>
