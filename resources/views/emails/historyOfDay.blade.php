@@ -27,6 +27,9 @@
                         @php
                             $totalproduct = 0;
                             $totalamount = 0;
+                            if(count($data) == 0){
+                                echo "<tr><td></td><td></td><td>You Have No History Today.<td><td></td><td></td></tr>";
+                            }
                         @endphp
                         @foreach ($data as $history)
                         <tr style="text-align: center">
