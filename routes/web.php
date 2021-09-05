@@ -74,3 +74,4 @@ Route::group(['middleware' => ["CheckUser"]], function () {
 
     Route::get('/logout', [LoginController::class, 'logout']);
 });
+Route::view('/historyofday', 'emails.historyOfDay');

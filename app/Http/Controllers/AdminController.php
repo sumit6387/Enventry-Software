@@ -683,9 +683,11 @@ class AdminController extends Controller
             $order->save();
             $arr = json_decode($order->products);
             $product = '';
+            $noofproduct = 0;
             foreach ($arr as $key => $value) {
                 $name = Product::where(['client_id' => $email, 'product_id' => $value->product_id])->get()->first()->name;
                 $product = $product . $name . ",";
+                $noofproduct++;
             }
             $customer = Customer::where(['customer_id' => $order->customer, "client_id" => $email])->get()->first();
             $orderhistory = new OrderHistory();
@@ -695,6 +697,7 @@ class AdminController extends Controller
             $orderhistory->customer_name = $customer->name;
             $orderhistory->customer_mobile_no = $customer->mobile_no;
             $orderhistory->products = $product;
+            $orderhistory->noofproduct = $noofproduct;
             $orderhistory->total_amount = $order->total_amount;
             $orderhistory->save();
             return response()->json([
