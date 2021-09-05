@@ -11,7 +11,7 @@
         <div class="container" style="background-color:#F3ECEC; font-size:15px;" >
         <br>
             <div style="margin-left:5%;margin-right:5%;overflow-x:scroll;"> 
-                <p style="margin-top: 10px;"><i>Hi <b>Sumit</b></i></p>
+                <p style="margin-top: 10px;"><i>Hi <b>{{ $name }}</b></i></p>
                 <p>Your today <b>{{ date('d-m-y') }}</b> order history:-</p>
                 <table style="width: 70%;border: 1px solid black;">
                     <thead>
@@ -24,16 +24,37 @@
                         </tr>
                     </thead>    
                     <tbody>
+                        @php
+                            $totalproduct = 0;
+                            $totalamount = 0;
+                        @endphp
+                        @foreach ($data as $history)
                         <tr style="text-align: center">
-                            <td>0019</td>
-                            <td>sumit</td>
-                            <td>8998888</td>
-                            <td>shoe,</td>
-                            <td>4000</td>
+                            <td>{{ $history->order_serial_id }}</td>
+                            <td>{{ $history->customer_name }}</td>
+                            <td>{{ $history->customer_mobile_no }}</td>
+                            <td>{{ $history->products }}</td>
+                            <td>₹ {{ $history->total_amount }}</td>
+                            @php
+                                $totalproduct += $history->noofproduct;
+                                $totalamount += $history->total_amount;
+                            @endphp
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
-                <h4><i>Online Web Care </i></h4>
+
+                <table style="width: 70%;margin-top:1%;">
+                    <thead>
+                        <tr>
+                            <th>Total Product</th>
+                            <th><b>{{ $totalproduct }}</b></th>
+                            <th>Total Amount</th>
+                            <th><b>₹ {{ $totalamount }}</b></th>
+                        </tr>
+                    </thead>
+                </table>
+                <h4 style="margin-left: 28%;"><i>Online Web Care </i></h4>
             </div>
         </div>
 </body>

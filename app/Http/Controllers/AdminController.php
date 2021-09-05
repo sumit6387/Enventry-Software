@@ -918,4 +918,13 @@ class AdminController extends Controller
         }
     }
 
+    public function todayOrderHistory()
+    {
+        $function = new AllFunction();
+        $users = User::where('role', "Client")->get();
+        foreach ($users as $key => $value) {
+            $function->todayHistoryEmail($value->email);
+        }
+    }
+
 }
