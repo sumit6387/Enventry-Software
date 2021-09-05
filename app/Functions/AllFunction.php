@@ -46,7 +46,7 @@ class AllFunction
         $data = ['name' => $user->name, 'data' => $orderhistory];
         $status = Mail::send('emails.historyOfDay', $data, function ($message) use ($to_name, $to_email) {
             $message->to($to_email, $to_name)
-                ->subject('Today History');
+                ->subject('Today History(' . date('d-m-y') . ")");
             $message->from('smartenventry@gmail.com', 'Online Web Care');
         });
         return true;

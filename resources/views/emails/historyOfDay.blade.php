@@ -11,7 +11,7 @@
         <div class="container" style="background-color:#F3ECEC; font-size:15px;" >
         <br>
             <div style="margin-left:5%;margin-right:5%;overflow-x:scroll;"> 
-                <p style="margin-top: 10px;"><i>Hi <b>{{ $name }}</b></i></p>
+                <p style="margin-top: 10px;"><i>Hi <b>{{ $name }},</b></i></p>
                 <p>Your today <b>{{ date('d-m-y') }}</b> order history:-</p>
                 <table style="width: 70%;border: 1px solid black;">
                     <thead>
