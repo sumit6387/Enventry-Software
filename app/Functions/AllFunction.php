@@ -5,6 +5,7 @@ use App\Models\OrderHistory;
 use App\Models\User;
 use Carbon\Carbon;
 use Mail;
+use PDF;
 
 class AllFunction
 {
@@ -44,10 +45,12 @@ class AllFunction
         $to_email = $email;
         $orderhistory = OrderHistory::where('client_id', $email)->whereDate('created_at', Carbon::today())->get();
         $data = ['name' => $user->name, 'data' => $orderhistory];
-        $status = Mail::send('emails.historyOfDay', $data, function ($message) use ($to_name, $to_email) {
+        $pdf = PDF::loadView('emails.historyOfDay', $data);
+        $status = Mail::send('emails.historyOfDay', $data, function ($message) use ($to_name, $to_email, $pdf) {
             $message->to($to_email, $to_name)
                 ->subject('Today History(' . date('d-m-y') . ")");
-            $message->from('smartenventry@gmail.com', 'Online Web Care');
+            $message->from('smartenventry@gmail.com', 'Online Web Care')
+                ->attachData($pdf->output(), "todayHistory.pdf");
         });
         return true;
     }

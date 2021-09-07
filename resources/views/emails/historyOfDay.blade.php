@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+        table{
+            border-collapse: collapse;
+        }
+    </style>
 </head>
 <body>
     <center>
@@ -13,7 +21,7 @@
             <div style="margin-left:5%;margin-right:5%;overflow-x:scroll;"> 
                 <p style="margin-top: 10px;"><i>Hi <b>{{ $name }},</b></i></p>
                 <p>Your today <b>{{ date('d-m-y') }}</b> order history:-</p>
-                <table style="width: 70%;border: 1px solid black;">
+                <table style="width: 100%;border: 1px solid black;">
                     <thead>
                         <tr>
                             <th>Invoice No</th>
@@ -37,7 +45,7 @@
                             <td>{{ $history->customer_name }}</td>
                             <td>{{ $history->customer_mobile_no }}</td>
                             <td>{{ $history->products }}</td>
-                            <td>₹ {{ $history->total_amount }}</td>
+                            <td>Rs {{ $history->total_amount }}</td>
                             @php
                                 $totalproduct += $history->noofproduct;
                                 $totalamount += $history->total_amount;
@@ -47,17 +55,17 @@
                     </tbody>
                 </table>
 
-                <table style="width: 70%;margin-top:1%;">
+                <table style="width: 100%;margin-top:1%;">
                     <thead>
                         <tr>
                             <th>Total Product</th>
                             <th><b>{{ $totalproduct }}</b></th>
                             <th>Total Amount</th>
-                            <th><b>₹ {{ $totalamount }}</b></th>
+                            <th><b>Rs {{ $totalamount }}</b></th>
                         </tr>
                     </thead>
                 </table>
-                <h4 style="margin-left: 28%;"><i>Online Web Care </i></h4>
+                <h4 style="margin-left: 40%;"><i>Online Web Care </i></h4>
             </div>
         </div>
 </body>
