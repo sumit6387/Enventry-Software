@@ -965,7 +965,7 @@ class AdminController extends Controller
             $data['customer'] = Customer::where('customer_id', $order->customer)->where('client_id', $email)->get()->first();
             $ar = OrderHistoryInvoice::where(['client_id' => $email, 'order_id' => $order_id])->get();
             if (count($ar) <= 0) {
-                return redirect('/orderHistory')->with(['status'=>'danger','message'=>"There No Record Related This Order."]);
+                return redirect('/orderHistory')->with(['status' => 'danger', 'msg' => "There No Record Related This Order."]);
             }
             $data['order'] = $order;
             $data['ordercount'] = Order::where('client_id', $email)->get()->count();
