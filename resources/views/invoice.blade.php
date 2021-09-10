@@ -7,16 +7,17 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
 
     <title>Invoice - Inventry Software</title>
   </head>
-  <body>
+  <body id="pdf">
         <button class="btn btn-primary" style="margin-left: 45%;margin-top:5%;" id="printSlip">Print Slip</button>
         <div class="container" style="margin: 4% 0% 4% 4%;
         ">
         @php
-        $user = \App\Models\User::where('email',session('email'))->get()->first();
-    @endphp
+            $user = \App\Models\User::where('email',session('email'))->get()->first();
+        @endphp
 
                 <div class="row">
                     <div class="col-md-8"><img src="{{ $user->logo }}" style="height: 82%;
@@ -104,8 +105,10 @@
                                 $gst = ($amount * $gs)/100;
                                 $totalAmount = $amount+$gst;
                                 // dd($totalAmount);
+                                if($order->discount > 0){
+                                    $totalAmount = $totalAmount - ($totalAmount*$order->discount) /100;
+                                }
                             @endphp
-                            
                         </tbody>
                     </table>
                     <hr>
@@ -114,7 +117,7 @@
                         <hr>
                         <p><b>Sub Total </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ {{ $amount }}</p>
                         <hr>
-                        <p><b>Discount  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span><input type="text" id="discount" style="width: 30px;"> %</span></p>
+                        <p><b>Discount  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span><input type="text" id="discount" style="width: 30px;" value="{{ $order->discount }}"> %</span></p>
                         <hr>
                         <p><b>Total   </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ <span id="total">{{ number_format($totalAmount,2)  }}</span></p>
                         <hr>
@@ -154,6 +157,7 @@
                 </div>
         </div>
     @include('layouts.js-link')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
     <script>
         $(document).ready(()=>{
             $.get(`{{ url('/balance/'.$totalAmount) }}`,(data,status)=>{
@@ -162,6 +166,7 @@
         });
             $('#printSlip').click(()=>{
                 $.get(`{{ url('/changeStatusOfOrder/') }}`,(data,status)=>{
+                        console.log(data);
                     if(data.status){
                         window.print();
                         setTimeout(() => {
@@ -175,7 +180,7 @@
                 var total = {{ $totalAmount }};
                  finaltotal = total- ((parseInt(total) * disc)/100);
                  var order_id = `{{ Request::segment(2) }}`;
-                 $.get(`{{ url('/updateTotalBalance/') }}/${order_id}/${finaltotal}`,(data,status)=>{
+                $.get(`{{ url('/updateTotalBalance/') }}/${order_id}/${finaltotal}/${disc}`,(data,status)=>{
                     $('#total').html(finaltotal.toFixed(2));
                     $('#amount_in_words').html(convertNumberToWords(finaltotal))
                 });
@@ -263,6 +268,5 @@
                     return words_string;
 }
     </script>
-
-  </body>
+</body>
 </html>

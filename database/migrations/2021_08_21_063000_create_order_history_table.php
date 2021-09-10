@@ -23,6 +23,8 @@ class CreateOrderHistoryTable extends Migration
             $table->string('products');
             $table->string('noofproduct')->default();
             $table->string('total_amount')->default(0);
+            $table->string('discount')->default(0);
+            $table->longText('pdf_link')->nullable();
             $table->timestamps();
         });
     }

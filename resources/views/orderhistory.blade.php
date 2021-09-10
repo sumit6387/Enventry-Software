@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inventry Software | Client</title>
+  <title>Inventry Software | Order History</title>
 
   @include('layouts.css-link')
 </head>
@@ -33,6 +33,7 @@
                     <th>Customer Mobile No</th>
                     <th>Products</th>
                     <th>Total Amount</th>
+                    <th>Action</th>
                 </tr>
             </thead>
                 <tbody>
@@ -48,6 +49,7 @@
                             <td>{{ $order->customer_mobile_no }}</td>
                             <td>{{ $order->products }}</td>
                             <td>₹ {{ $order->total_amount }}</td>
+                            <td><a href="{{ url('/view-invoice/'.$order->order_id) }}" class="btn btn-primary">Download Invoice</a></td>
                           </tr>
                       @endforeach
                 </tbody>

@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\GST;
 use App\Models\Order;
 use App\Models\OrderHistory;
+use App\Models\OrderHistoryInvoice;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -689,6 +690,33 @@ class AdminController extends Controller
                 $product = $product . $name . ",";
                 $noofproduct++;
             }
+            // for generate pdf of bill
+            $data['customer'] = Customer::where('customer_id', $order->customer)->where('client_id', $email)->get()->first();
+            $arr = json_decode($order->products);
+            $data['order'] = $order;
+            $data['ordercount'] = Order::where('client_id', $email)->get()->count();
+            $data['gst'] = GST::where('client_id', $email)->get();
+            $ar = [];
+            $str = '';
+            foreach ($arr as $key => $value) {
+                $product = Product::select('name', 'price', 'gst')->where('client_id', $email)->where('product_id', $value->product_id)->get()->first();
+                $prod = array('name' => $product->name, 'price' => $product->price, 'quantity' => $value->quantity, 'gst' => $product->gst);
+                array_push($ar, $prod);
+                $gst = $product->gst;
+                if ($gst <= 0) {
+                    $gst = 0;
+                }
+                $str = $str . $product->name . ",";
+                $orderhistory_invoices = new OrderHistoryInvoice();
+                $orderhistory_invoices->order_id = $order->order_id;
+                $orderhistory_invoices->client_id = $order->client_id;
+                $orderhistory_invoices->product_name = $product->name;
+                $orderhistory_invoices->quantity = $value->quantity;
+                $orderhistory_invoices->gst = $gst;
+                $orderhistory_invoices->price = $product->price;
+                $orderhistory_invoices->save();
+            }
+            $data['products'] = $ar;
             $customer = Customer::where(['customer_id' => $order->customer, "client_id" => $email])->get()->first();
             $orderhistory = new OrderHistory();
             $orderhistory->order_id = $order->order_id;
@@ -696,9 +724,10 @@ class AdminController extends Controller
             $orderhistory->client_id = $email;
             $orderhistory->customer_name = $customer->name;
             $orderhistory->customer_mobile_no = $customer->mobile_no;
-            $orderhistory->products = $product;
+            $orderhistory->products = $str;
             $orderhistory->noofproduct = $noofproduct;
             $orderhistory->total_amount = $order->total_amount;
+            $orderhistory->discount = $order->discount;
             $orderhistory->save();
             return response()->json([
                 'status' => true,
@@ -775,11 +804,12 @@ class AdminController extends Controller
         return view('orderhistory', ["orders" => $order]);
     }
 
-    public function updateTotalBalance($order_id, $amount)
+    public function updateTotalBalance($order_id, $amount, $discount)
     {
         $order = Order::where(['order_id' => $order_id, 'client_id' => session('email')])->get()->first();
         if ($order) {
             $order->total_amount = $amount;
+            $order->discount = $discount;
             $order->save();
             return response()->json([
                 'status' => true,
@@ -925,6 +955,37 @@ class AdminController extends Controller
         foreach ($users as $key => $value) {
             $function->todayHistoryEmail($value->email);
         }
+    }
+
+    public function viewInvoice(Request $request, $order_id)
+    {
+        $email = $request->session()->get('email');
+        $order = Order::where(['client_id' => $email, 'order_id' => $order_id])->get()->first();
+        if ($order) {
+            $data['customer'] = Customer::where('customer_id', $order->customer)->where('client_id', $email)->get()->first();
+            $ar = OrderHistoryInvoice::where(['client_id' => $email, 'order_id' => $order_id])->get();
+            $data['order'] = $order;
+            $data['ordercount'] = Order::where('client_id', $email)->get()->count();
+            $data['gst'] = GST::where('client_id', $email)->get();
+            $arr = [];
+            foreach ($ar as $key => $value) {
+                $prod = array('name' => $value->product_name, 'price' => $value->price, 'quantity' => $value->quantity, 'gst' => $value->gst);
+                array_push($arr, $prod);
+            }
+            $data['products'] = $arr;
+            return view('view-invoice', $data);
+        } else {
+            return redirect('/orderHistory');
+        }
+    }
+
+    public function test()
+    {
+        $data = User::get();
+        // $pdf = PDF::loadView('test', $data);
+        return view('test');
+        // return $pdf->download('test12.pdf');
+
     }
 
 }

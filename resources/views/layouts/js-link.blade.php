@@ -19,7 +19,7 @@
 <script src="{{ url('public/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
 <!-- daterangepicker -->
 <script src="{{ url('public/plugins/moment/moment.min.js') }}"></script>
-<script src="{{ url('public/plugins/daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ url('plugins/daterangepicker/daterangepicker.js') }}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="{{ url('public/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <!-- Summernote -->
