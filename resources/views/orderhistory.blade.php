@@ -17,13 +17,37 @@
     <!-- Main content -->
     <section class="content">
     <div class="container-fluid">
+      <form action="{{ url('/orderHistoryInPdf') }}" method="POST">
+      <div class="row">
+            <div class="col-md-5">
+              <div class="form-group">
+                <label for="From">From : </label>
+                <input type="date" class="form-control" name="from" >
+                {{ csrf_field() }}
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="to">To : </label>
+                <input type="date" class="form-control" name="to" >
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group mt-3">
+                <button class="btn btn-primary">Search</button>
+              </div>
+            </div>
+          </div>
+        </form>
         <div class="card">
+          
         <div class="card-body">
             @if (session('msg') && session('status'))
                 <div id="alert1" class="alert alert-{{ session('status') }}" role="alert">
                     {{ session('msg') }}
                 </div>
             @endif
+            
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -97,7 +121,7 @@
     $(document).ready(()=>{
         setTimeout(() => {
             $('#alert1').hide();
-        }, 2000);
+        }, 3000);
       $('.dataTables_filter input[type="search"]').css(
     {'width':'400px','display':'inline-block',"margin-left":"15%"}
   );

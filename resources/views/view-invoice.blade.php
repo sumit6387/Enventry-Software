@@ -191,7 +191,7 @@
                 var order_id = `{{ Request::segment(2) }}`;
                 var pdf = new jsPDF('p', 'mm', 'a4');
                 pdf.addHTML(document.body, function() {
-                    pdf.save(`${order_id}.pdf`);
+                    pdf.save(`invoice-${order_id}.pdf`);
                     window.location.href=`{{ url('/orderHistory') }}`
                 });
 

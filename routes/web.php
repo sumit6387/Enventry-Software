@@ -76,4 +76,4 @@ Route::group(['middleware' => ["CheckUser"]], function () {
     Route::get('/logout', [LoginController::class, 'logout']);
 });
 Route::get('/historyofday', [AdminController::class, 'todayOrderHistory']);
-// Route::get('/test', [AdminController::class, 'test']);
+Route::post('/orderHistoryInPdf', [AdminController::class, 'test']);

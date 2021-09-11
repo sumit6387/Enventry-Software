@@ -12,9 +12,11 @@ use App\Models\OrderHistory;
 use App\Models\OrderHistoryInvoice;
 use App\Models\Product;
 use App\Models\User;
+use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use PDF;
 use Validator;
 
 class AdminController extends Controller
@@ -982,12 +984,49 @@ class AdminController extends Controller
         }
     }
 
-    public function test()
+    public function test(Request $request)
     {
-        $data = User::get();
-        // $pdf = PDF::loadView('test', $data);
-        return view('test');
-        // return $pdf->download('test12.pdf');
+        date_default_timezone_set('Asia/Kolkata');
+        $valid = Validator::make($request->all(), [
+            'from' => "required",
+            'to' => "required",
+        ]);
+        if ($valid->passes()) {
+            $email = session('email');
+            $from = date('d-m-y h:i:s', strtotime(date('2021-09-06 09:41:23')));
+            $to = date('d-m-y h:i:s');
+            // dd($from . "  " . $to);
+            $from = date('y-m-d h:i:s', strtotime($request->from));
+            $to = date('y-m-d h:i:s', strtotime($request->to));
+            $orders = Order::where(['client_id' => $email, 'status' => 1])->whereBetween('updated_at', [$from, $to])->get();
+            if (count($orders) == 0) {
+                return redirect('/orderHistory')->with(['status' => "danger", 'msg' => "No Data Found Between These Date."]);
+            }
+            $data = [];
+            foreach ($orders as $key => $value) {
+                $orderhistoryinvoice = OrderHistoryInvoice::where(['client_id' => $email, 'order_id' => $value->order_id])->get();
+                $customer = Customer::where(['customer_id' => $value->customer, 'client_id' => $email])->get()->first();
+                $orderhistory = OrderHistory::where(['client_id' => $email, 'order_id' => $value->order_id])->get()->first();
+                if (count($orderhistoryinvoice) && $orderhistory) {
+                    $ar = [];
+                    foreach ($orderhistoryinvoice as $invoicedata) {
+                        $a = ['name' => $invoicedata->product_name, 'quantity' => $invoicedata->quantity, 'gst' => $invoicedata->gst, 'price' => $invoicedata->price];
+                        array_push($ar, $a);
+                    }
+                    $arr = ["invoice_no" => $orderhistory->order_serial_id, 'customer_name' => $customer->name, 'customer_no' => $customer->mobile_no, 'discount' => $orderhistory->discount, 'products' => $ar, 'total_amount' => $orderhistory->total_amount];
+                }
+                array_push($data, $arr);
+            }
+            // dd($data);
+            $pdf = PDF::loadView('emails.test', ['data' => $data]);
+            return $pdf->download('history.pdf');
+        } else {
+            $error = '';
+            foreach ($valid->errors()->all() as $key => $value) {
+                $error = $error . $value;
+            }
+            return redirect('/orderHistory')->with(['status' => "danger", 'msg' => $error]);
+        }
 
     }
 
