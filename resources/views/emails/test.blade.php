@@ -23,7 +23,11 @@
     </style>
   </head>
   <body>
-    <h2 align="center" class="mt-3">Order History</h2>
+        <div style="column-count: 3;">
+            <div><b> From : </b> {{ date('d-m-y',strtotime($from)) }} </div>
+            <div><h1>Order History</h1></div>
+            <div><b> To : </b> {{ date('d-m-y',strtotime($to)) }}</div>
+        </div>
     <div class="container">
         <table class="table table-bordered table-striped table-hovered">
             <thead>
@@ -104,7 +108,7 @@
                 <tr>
                     <td colspan="2"><b>Total GST Amount(in rupees)</b></td>
                     <td colspan="1">{{ number_format($gstamount,1) }}</td>
-                    <td>No Of Product</td>
+                    <td><b>No Of Product</b></td>
                     <td>{{ $product1 }}</td>
                     <td colspan="4"><b>Total Amount Of History</b></td>
                     <td>{{ number_format($totalhistoryamount,1) }}</td>

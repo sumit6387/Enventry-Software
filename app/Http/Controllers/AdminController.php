@@ -1019,7 +1019,7 @@ class AdminController extends Controller
                
             }
             // dd($data);
-            $pdf = PDF::loadView('emails.test', ['data' => $data]);
+            $pdf = PDF::loadView('emails.test', ['data' => $data,'from'=>$request->from,'to'=>$request->to]);
             return $pdf->download('history.pdf');
         } else {
             $error = '';
