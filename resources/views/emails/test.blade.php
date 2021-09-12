@@ -38,10 +38,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="4"></td>
                     <td>Product</td>
                     <td>Quantity</td>
                     <td>GST</td>
