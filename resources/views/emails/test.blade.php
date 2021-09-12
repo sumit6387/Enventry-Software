@@ -49,6 +49,7 @@
                 @php
                     $gstamount = 0;
                     $totalhistoryamount=0;
+                    $product1 = 0;
                 @endphp
                 @foreach ($data as $value)
                 @php
@@ -67,8 +68,8 @@
                         <td>{{ number_format($value['products'][0]['price'], 1) }}</td>
                         @php
                             $amount = ($value['products'][0]['price']*$value['products'][0]['quantity']) + ($value['products'][0]['price']*$value['products'][0]['quantity']*$value['products'][0]['gst'])/100;
-                            $amount += ($amount*$value['discount'])/100;
                             $gstamount+= ($value['products'][0]['price']*$value['products'][0]['quantity']*$value['products'][0]['gst'])/100;
+                            $product1 += $value['products'][0]['quantity'];
                             $totalhistoryamount += $value['total_amount'];
 
                         @endphp
@@ -90,7 +91,7 @@
                                     <td>{{ number_format($item['price'],1) }}</td>
                                     @php
                                         $amount1 = ($item['price']*$item['quantity']) + ($item['price']*$item['quantity']*$item['gst'])/100;
-                                        $amount1 += ($amount1*$value['discount'])/100;
+                                        $product1 += $item['quantity'];
                                         $gstamount+= ($item['price']*$item['quantity']*$item['gst'])/100;
                                     @endphp
                                     <td>{{ number_format($amount1,1) }}</td>
@@ -101,8 +102,10 @@
                     @endforeach
                 @endforeach
                 <tr>
-                    <td colspan="3"><b>Total GST(in rupees)</b></td>
-                    <td colspan="2">{{ number_format($gstamount,1) }}</td>
+                    <td colspan="2"><b>Total GST Amount(in rupees)</b></td>
+                    <td colspan="1">{{ number_format($gstamount,1) }}</td>
+                    <td>No Of Product</td>
+                    <td>{{ $product1 }}</td>
                     <td colspan="4"><b>Total Amount Of History</b></td>
                     <td>{{ number_format($totalhistoryamount,1) }}</td>
                 </tr>
