@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 
     <title>Order History</title>
     <style>
@@ -23,10 +23,10 @@
     </style>
   </head>
   <body>
-        <div style="column-count: 3;">
-            <div><b> From : </b> {{ date('d-m-y',strtotime($from)) }} </div>
-            <div><h1>Order History</h1></div>
-            <div><b> To : </b> {{ date('d-m-y',strtotime($to)) }}</div>
+        <div class="row">
+            <div class="col-md-4"><b> From : </b> {{ date('d-m-y',strtotime($from)) }} </div>
+            <div class="col-md-4"><h2>Order History</h2></div>
+            <div class="col-md-4"><b> To : </b> {{ date('d-m-y',strtotime($to)) }}</div>
         </div>
     <div class="container">
         <table class="table table-bordered table-striped table-hovered">
@@ -117,6 +117,6 @@
             </tbody>
         </table>
     </div>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
   </body>
 </html>
