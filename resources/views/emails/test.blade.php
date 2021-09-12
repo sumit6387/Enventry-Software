@@ -104,9 +104,9 @@
                     @endforeach
                 @endforeach
                 <tr>
-                    <td colspan="3">Total GST(in rupees)</td>
-                    <td colspan="3">Rs {{ $gstamount }}</td>
-                    <td colspan="3">Total Amount Of History</td>
+                    <td colspan="3"><b>Total GST(in rupees)</b></td>
+                    <td colspan="2">Rs {{ $gstamount }}</td>
+                    <td colspan="4"><b>Total Amount Of History</b></td>
                     <td>Rs {{ $totalhistoryamount }}</td>
                 </tr>
                 
