@@ -34,7 +34,7 @@
             </div>
             <div class="col-md-3">
               <div class="form-group mt-3">
-                <button class="btn btn-primary">Search</button>
+                <button class="btn btn-primary">Download</button>
               </div>
             </div>
           </div>
