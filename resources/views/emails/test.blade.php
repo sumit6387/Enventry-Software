@@ -40,9 +40,9 @@
                 <tr>
                     <td colspan="4"></td>
                     <td>Product</td>
-                    <td>Quantity</td>
+                    <td>QTY</td>
                     <td>GST</td>
-                    <td>Price</td>
+                    <td>Price(in rs)</td>
                     <td>Total Price</td>
                     <td></td>
                 </tr>
@@ -64,7 +64,7 @@
                         <td>{{ $value['products'][0]['name'] }}</td>
                         <td>{{ $value['products'][0]['quantity'] }}</td>
                         <td>{{ $value['products'][0]['gst'] }} %</td>
-                        <td>Rs {{ $value['products'][0]['price'] }}</td>
+                        <td>{{ number_format($value['products'][0]['price'], 1) }}</td>
                         @php
                             $amount = ($value['products'][0]['price']*$value['products'][0]['quantity']) + ($value['products'][0]['price']*$value['products'][0]['quantity']*$value['products'][0]['gst'])/100;
                             $amount += ($amount*$value['discount'])/100;
@@ -72,8 +72,8 @@
                             $totalhistoryamount += $value['total_amount'];
 
                         @endphp
-                        <td>Rs {{ $amount }}</td>
-                        <td rowspan="{{ $row }}">Rs {{ $value['total_amount'] }}</td>
+                        <td>{{ number_format($amount,1) }}</td>
+                        <td rowspan="{{ $row }}">{{ number_format($value['total_amount'],1) }}</td>
                     </tr>
                     @foreach ($value['products'] as $item)
                         <?php
@@ -87,13 +87,13 @@
                                     <td>{{ $item['name'] }}</td>
                                     <td>{{ $item['quantity'] }}</td>
                                     <td>{{ $item['gst'] }} %</td>
-                                    <td>Rs {{ $item['price'] }}</td>
+                                    <td>{{ number_format($item['price'],1) }}</td>
                                     @php
                                         $amount1 = ($item['price']*$item['quantity']) + ($item['price']*$item['quantity']*$item['gst'])/100;
                                         $amount1 += ($amount1*$value['discount'])/100;
                                         $gstamount+= ($item['price']*$item['quantity']*$item['gst'])/100;
                                     @endphp
-                                    <td>Rs {{ $amount1 }}</td>
+                                    <td>{{ number_format($amount1,1) }}</td>
                                     </tr>
                                     <?php
                             }
@@ -102,9 +102,9 @@
                 @endforeach
                 <tr>
                     <td colspan="3"><b>Total GST(in rupees)</b></td>
-                    <td colspan="2">Rs {{ $gstamount }}</td>
+                    <td colspan="2">{{ number_format($gstamount,1) }}</td>
                     <td colspan="4"><b>Total Amount Of History</b></td>
-                    <td>Rs {{ $totalhistoryamount }}</td>
+                    <td>{{ number_format($totalhistoryamount,1) }}</td>
                 </tr>
                 
             </tbody>
