@@ -25,9 +25,8 @@
   </head>
   <body>
         <div style="column-count: 3;">
-            <div><p><b> From : </b> {{ date('d-m-y',strtotime($from)) }} </p></div>
-            <div><h2>Order History</h2></div>
-            <div><p><b> To : </b> {{ date('d-m-y',strtotime($to)) }}</p></div>
+            <div><p><b> From : </b> {{ date('d-m-y',strtotime($from)) }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><b> To : </b> {{ date('d-m-y',strtotime($to)) }}</span></p></div>
+            <div><h2 align="center">Order History</h2></div>
         </div>
     <div class="container">
         <table class="table table-bordered table-striped table-hovered">
