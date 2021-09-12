@@ -1014,8 +1014,9 @@ class AdminController extends Controller
                         array_push($ar, $a);
                     }
                     $arr = ["invoice_no" => $orderhistory->order_serial_id, 'customer_name' => $customer->name, 'customer_no' => $customer->mobile_no, 'discount' => $orderhistory->discount, 'products' => $ar, 'total_amount' => $orderhistory->total_amount];
+                     array_push($data, $arr);
                 }
-                array_push($data, $arr);
+               
             }
             // dd($data);
             $pdf = PDF::loadView('emails.test', ['data' => $data]);
