@@ -24,7 +24,7 @@
     </style>
   </head>
   <body>
-        <div class="row">
+        <div class="row" style="margin-bottom: 5%;">
             <div style="float: left;width: 25%;"><b> From : </b> {{ date('d-m-y',strtotime($from)) }} </div>
             <div style="float: left;width:50%;"><h2>Order History</h2></div>
             <div style="float: right;width: 25%;"><b> To : </b> {{ date('d-m-y',strtotime($to)) }}</div>
