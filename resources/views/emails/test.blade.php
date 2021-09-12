@@ -49,6 +49,9 @@
                     <td>Total Price</td>
                     <td></td>
                 </tr>
+                @php
+                    $gstamount = 0;
+                @endphp
                 @foreach ($data as $value)
                 @php
                 // dd($value['products']);
@@ -67,6 +70,8 @@
                         @php
                             $amount = ($value['products'][0]['price']*$value['products'][0]['quantity']) + ($value['products'][0]['price']*$value['products'][0]['quantity']*$value['products'][0]['gst'])/100;
                             $amount += ($amount*$value['discount'])/100;
+                            $gstamount+= ($value['products'][0]['price']*$value['products'][0]['quantity']*$value['products'][0]['gst'])/100;
+                            $totalhistoryamount += $value['total_amount'];
 
                         @endphp
                         <td>Rs {{ $amount }}</td>
@@ -88,6 +93,7 @@
                                     @php
                                         $amount1 = ($item['price']*$item['quantity']) + ($item['price']*$item['quantity']*$item['gst'])/100;
                                         $amount1 += ($amount1*$value['discount'])/100;
+                                        $gstamount+= ($item['price']*$item['quantity']*$item['gst'])/100;
                                     @endphp
                                     <td>Rs {{ $amount1 }}</td>
                                     </tr>
@@ -96,6 +102,12 @@
                             ?>
                     @endforeach
                 @endforeach
+                <tr>
+                    <td colspan="3">Total GST(in rupees)</td>
+                    <td colspan="3">Rs {{ $gstamount }}</td>
+                    <td colspan="3">Total Amount Of History</td>
+                    <td>Rs {{ $totalhistoryamount }}</td>
+                </tr>
                 
             </tbody>
         </table>
