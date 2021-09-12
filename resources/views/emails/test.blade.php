@@ -24,10 +24,10 @@
     </style>
   </head>
   <body>
-        <div class="row" style="margin-bottom: 5%;">
-            <div style="float: left;width: 25%;"><b> From : </b> {{ date('d-m-y',strtotime($from)) }} </div>
-            <div style="float: left;width:50%;"><h2>Order History</h2></div>
-            <div style="float: right;width: 25%;"><b> To : </b> {{ date('d-m-y',strtotime($to)) }}</div>
+        <div style="column-count: 3;">
+            <div><p><b> From : </b> {{ date('d-m-y',strtotime($from)) }} </p></div>
+            <div><h2>Order History</h2></div>
+            <div><p><b> To : </b> {{ date('d-m-y',strtotime($to)) }}</p></div>
         </div>
     <div class="container">
         <table class="table table-bordered table-striped table-hovered">
