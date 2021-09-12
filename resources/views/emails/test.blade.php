@@ -51,6 +51,7 @@
                 </tr>
                 @php
                     $gstamount = 0;
+                    $totalhistoryamount=0;
                 @endphp
                 @foreach ($data as $value)
                 @php
