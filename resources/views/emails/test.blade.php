@@ -12,6 +12,7 @@
     <style>
         body{
             background: antiquewhite;
+            height: 100%;
         }
         table, th, td {
             border: 1px solid black;
@@ -24,9 +25,9 @@
   </head>
   <body>
         <div class="row">
-            <div class="col-md-4"><b> From : </b> {{ date('d-m-y',strtotime($from)) }} </div>
-            <div class="col-md-4"><h2>Order History</h2></div>
-            <div class="col-md-4"><b> To : </b> {{ date('d-m-y',strtotime($to)) }}</div>
+            <div style="float: left;width: 25%;"><b> From : </b> {{ date('d-m-y',strtotime($from)) }} </div>
+            <div style="float: left;width:50%;"><h2>Order History</h2></div>
+            <div style="float: right;width: 25%;"><b> To : </b> {{ date('d-m-y',strtotime($to)) }}</div>
         </div>
     <div class="container">
         <table class="table table-bordered table-striped table-hovered">
