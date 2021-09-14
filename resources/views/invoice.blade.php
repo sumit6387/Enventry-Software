@@ -83,6 +83,7 @@
                         <tbody>
                             @php
                                 $amount = 0;
+                                $amountwithoutgst = 0;
                             @endphp
                             @foreach ($products as $product)
                                 <tr>
@@ -94,9 +95,14 @@
                                         0
                                     @endif% </td>
                                     <td> ₹ {{ $product['price']}}</td>
-                                    <td>₹ {{ $product['price']  }} * {{ $product['quantity'] }} + ₹ {{ $product['price']*$product['quantity']*$product['gst']/100 }} =₹ {{ $product['price']*$product['quantity'] +($product['price']*$product['quantity']*$product['gst']/100) }} </td>
                                     @php
-                                        $amount += $product['price']*$product['quantity'] +($product['price']*$product['quantity']*$product['gst']/100) ;
+                                        $price = $product['price'] - ($product['price']*$order->discount)/100;
+                                    @endphp
+                                    <td>₹ {{ $price  }} * {{ $product['quantity'] }} + ₹ {{ $price*$product['quantity']*$product['gst']/100 }} =₹ {{ $price*$product['quantity'] +($price*$product['quantity']*$product['gst']/100) }} </td>
+                                    @php
+                                        
+                                        $amount += $price*$product['quantity'] +($price*$product['quantity']*$product['gst']/100) ;
+                                        $amountwithoutgst += $price*$product['quantity'];
                                     @endphp
                                 </tr>
                             @endforeach
@@ -105,9 +111,9 @@
                                 $gst = ($amount * $gs)/100;
                                 $totalAmount = $amount+$gst;
                                 // dd($totalAmount);
-                                if($order->discount > 0){
-                                    $totalAmount = $totalAmount - ($totalAmount*$order->discount) /100;
-                                }
+                                // if($order->discount > 0){
+                                //     $totalAmount = $totalAmount - ($totalAmount*$order->discount) /100;
+                                // }
                             @endphp
                         </tbody>
                     </table>
@@ -115,7 +121,7 @@
                     <div class="col-md-7"></div>
                     <div class="col-md-5">
                         <hr>
-                        <p><b>Sub Total </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ {{ $amount }}</p>
+                        <p><b>Sub Total </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ₹ {{ $amountwithoutgst }}</p>
                         <hr>
                         <p><b>Discount  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span><input type="text" id="discount" style="width: 30px;" value="{{ $order->discount }}"> %</span></p>
                         <hr>
@@ -183,6 +189,7 @@
                 $.get(`{{ url('/updateTotalBalance/') }}/${order_id}/${finaltotal}/${disc}`,(data,status)=>{
                     $('#total').html(finaltotal.toFixed(2));
                     $('#amount_in_words').html(convertNumberToWords(finaltotal))
+                    window.location.href=window.location.href;
                 });
             });
 

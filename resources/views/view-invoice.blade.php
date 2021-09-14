@@ -101,6 +101,7 @@
                 <tbody>
                     @php
                         $amount = 0;
+                        $amountwithoutgst = 0;
                     @endphp
                     @foreach ($products as $product)
                         <tr>
@@ -112,9 +113,13 @@
                                 0
                             @endif% </td>
                             <td> ₹ {{ $product['price']}}</td>
-                            <td>₹ {{ $product['price']  }} * {{ $product['quantity'] }} + ₹ {{ $product['price']*$product['quantity']*$product['gst']/100 }} =₹ {{ $product['price']*$product['quantity'] +($product['price']*$product['quantity']*$product['gst']/100) }} </td>
                             @php
-                                $amount += $product['price']*$product['quantity'] +($product['price']*$product['quantity']*$product['gst']/100) ;
+                                $price = $product['price'] - ($product['price']*$order->discount)/100;
+                            @endphp
+                            <td>₹ {{ $price  }} * {{ $product['quantity'] }} + ₹ {{ number_format($price*$product['quantity']*$product['gst']/100,2)  }} =₹ {{ number_format($price*$product['quantity'] +($price*$product['quantity']*$product['gst']/100),2)  }} </td>
+                            @php
+                                $amount += $price*$product['quantity'] +($price*$product['quantity']*$product['gst']/100) ;
+                                $amountwithoutgst += $price*$product['quantity'];
                             @endphp
                         </tr>
                     @endforeach
@@ -123,9 +128,9 @@
                         $gst = ($amount * $gs)/100;
                         $totalAmount = $amount+$gst;
                         // dd($totalAmount);
-                        if($order->discount > 0){
-                            $totalAmount = $totalAmount - ($totalAmount*$order->discount) /100;
-                        }
+                        // if($order->discount > 0){
+                        //     $totalAmount = $totalAmount - ($totalAmount*$order->discount) /100;
+                        // }
                     @endphp
                 </tbody>
             </table>
@@ -146,8 +151,7 @@
                 <p>&nbsp;</p>
             </div>
             <div>
-                <hr>
-                <p><b>Sub Total </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Rs {{ $amount }}</p>
+                <p><b>Sub Total </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Rs {{ $amountwithoutgst }}</p>
                 <hr>
                 <p><b>Discount  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span>{{ $order->discount }} %</span></p>
                 <hr>

@@ -71,8 +71,9 @@
                         <td>{{ $value['products'][0]['gst'] }} %</td>
                         <td>{{ number_format($value['products'][0]['price'], 1) }}</td>
                         @php
-                            $amount = ($value['products'][0]['price']*$value['products'][0]['quantity']) + ($value['products'][0]['price']*$value['products'][0]['quantity']*$value['products'][0]['gst'])/100;
-                            $gstamount+= ($value['products'][0]['price']*$value['products'][0]['quantity']*$value['products'][0]['gst'])/100;
+                            $price1 = $value['products'][0]['price'] - ($value['products'][0]['price']*$value['discount'])/100;
+                            $amount = ($price1*$value['products'][0]['quantity']) + ($price1*$value['products'][0]['quantity']*$value['products'][0]['gst'])/100;
+                            $gstamount+= ($price1*$value['products'][0]['quantity']*$value['products'][0]['gst'])/100;
                             $product1 += $value['products'][0]['quantity'];
                             $totalhistoryamount += $value['total_amount'];
 
@@ -94,9 +95,10 @@
                                     <td>{{ $item['gst'] }} %</td>
                                     <td>{{ number_format($item['price'],1) }}</td>
                                     @php
-                                        $amount1 = ($item['price']*$item['quantity']) + ($item['price']*$item['quantity']*$item['gst'])/100;
+                                        $price = $item['price'] - ($item['price']*$value['discount'])/100;
+                                        $amount1 = ($price*$item['quantity']) + ($price*$item['quantity']*$item['gst'])/100;
                                         $product1 += $item['quantity'];
-                                        $gstamount+= ($item['price']*$item['quantity']*$item['gst'])/100;
+                                        $gstamount+= ($price*$item['quantity']*$item['gst'])/100;
                                     @endphp
                                     <td>{{ number_format($amount1,1) }}</td>
                                     </tr>

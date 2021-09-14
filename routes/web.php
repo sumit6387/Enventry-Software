@@ -73,6 +73,10 @@ Route::group(['middleware' => ["CheckUser"]], function () {
     Route::get('/orderHistory', [AdminController::class, 'orderHistory']);
     Route::get('/view-invoice/{order_id}', [AdminController::class, 'viewInvoice']);
 
+    Route::get('/customers', [AdminController::class, 'showCustomers']);
+    Route::get('/edit-customer/{customer_id}', [AdminController::class, 'editCustomer']);
+    Route::post('/updateCustomer', [AdminController::class, 'updateCustomer']);
+
     Route::get('/logout', [LoginController::class, 'logout']);
 });
 Route::get('/historyofday', [AdminController::class, 'todayOrderHistory']);

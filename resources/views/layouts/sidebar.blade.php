@@ -92,6 +92,16 @@
           </li>
           @endif
           <li class="nav-item">
+            <a href="{{ url('/customers') }}" class="nav-link @if (Request::segment(1)=='customers')
+            active
+          @endif">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+                Customers
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ url('/order') }}" class="nav-link @if (Request::segment(1)=='order')
             active
           @endif">
@@ -101,6 +111,7 @@
               </p>
             </a>
           </li>
+          
           <li class="nav-item">
             <a href="{{ url('/orderHistory') }}" class="nav-link @if (Request::segment(1)=='orderHistory')
             active

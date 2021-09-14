@@ -1014,12 +1014,12 @@ class AdminController extends Controller
                         array_push($ar, $a);
                     }
                     $arr = ["invoice_no" => $orderhistory->order_serial_id, 'customer_name' => $customer->name, 'customer_no' => $customer->mobile_no, 'discount' => $orderhistory->discount, 'products' => $ar, 'total_amount' => $orderhistory->total_amount];
-                     array_push($data, $arr);
+                    array_push($data, $arr);
                 }
-               
+
             }
             // dd($data);
-            $pdf = PDF::loadView('emails.test', ['data' => $data,'from'=>$request->from,'to'=>$request->to]);
+            $pdf = PDF::loadView('emails.test', ['data' => $data, 'from' => $request->from, 'to' => $request->to]);
             return $pdf->download('history.pdf');
         } else {
             $error = '';
@@ -1029,6 +1029,53 @@ class AdminController extends Controller
             return redirect('/orderHistory')->with(['status' => "danger", 'msg' => $error]);
         }
 
+    }
+
+    public function showCustomers()
+    {
+        $email = session('email');
+        $data['customers'] = Customer::orderby('id', 'desc')->where(['client_id' => $email])->get();
+        return view('customers', $data);
+    }
+
+    public function editCustomer($customer_id)
+    {
+        $email = session('email');
+        $customer = Customer::where(['client_id' => $email, 'customer_id' => $customer_id])->get()->first();
+        if ($customer) {
+            return view('edit-customer', ['customer' => $customer]);
+        } else {
+            return redirect('/customers');
+        }
+    }
+
+    public function updateCustomer(Request $request)
+    {
+        $valid = Validator::make($request->all(), [
+            'name' => "required",
+        ]);
+        if ($valid->passes()) {
+            $email = session('email');
+            $customer = Customer::where(['client_id' => $email, 'customer_id' => $request->customer_id])->get()->first();
+            if ($customer) {
+                $customer->name = $request->name;
+                $customer->email = $request->email;
+                $customer->mobile_no = $request->mobile_no;
+                $customer->address = $request->address;
+                $customer->pincode = $request->pincode;
+                $customer->update();
+                // dd($customer);
+                return redirect('/edit-customer/' . $request->customer_id)->with(['status' => "success", 'msg' => "Customer Updated Successfully"]);
+            } else {
+                return redirect('/edit-customer/' . $request->customer_id)->with(['status' => "danger", 'msg' => "Something Went Wrong!"]);
+            }
+        } else {
+            $error = '';
+            foreach ($valid->errors()->all() as $key => $value) {
+                $error = $error . $value;
+            }
+            return redirect('/edit-customer/' . $request->customer_id)->with(['status' => "danger", 'msg' => $error]);
+        }
     }
 
 }
