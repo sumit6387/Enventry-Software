@@ -77,7 +77,7 @@
                 <p><b>Mobile No</b> : <span>{{ $customer->mobile_no }}</span></p>
                 <p><b>Email</b> : <span>{{ $customer->email }}</span></p>
                 <p><b>Address</b> : <span>{{ $customer->address }}, {{ $customer->pincode }}</span></p>
-                <p> &nbsp; </p>
+                <p> <b>GST No</b> : <span>{{ $customer->gst_no }}</span> </p>
             </div>
             <div>
                 <p><b>Invoice Number: </b> &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ $order->order_serial_id }}</span> </p>
