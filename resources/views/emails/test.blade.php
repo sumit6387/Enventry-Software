@@ -119,7 +119,7 @@
                     <td colspan="1">{{ number_format($gstamount,1) }}</td>
                     <td><b>No Of Product</b></td>
                     <td>{{ $product1 }}</td>
-                    <td colspan="5"><b>Total Amount Of History</b></td>
+                    <td colspan="6"><b>Total Amount Of History</b></td>
                     <td>{{ number_format($totalhistoryamount,1) }}</td>
                 </tr>
                 
