@@ -1021,7 +1021,7 @@ class AdminController extends Controller
                         $a = ['name' => $invoicedata->product_name, 'quantity' => $invoicedata->quantity, 'gst' => $invoicedata->gst, 'price' => $invoicedata->price, 'product_discount' => $invoicedata->discount];
                         array_push($ar, $a);
                     }
-                    $arr = ["invoice_no" => $orderhistory->order_serial_id, 'customer_name' => $customer->name, 'customer_no' => $customer->mobile_no, 'discount' => $orderhistory->discount, 'products' => $ar, 'total_amount' => $orderhistory->total_amount];
+                    $arr = ["invoice_no" => $orderhistory->order_serial_id, 'customer_name' => $customer->name, 'customer_no' => $customer->mobile_no,'customer_gst_no'=>$customer->gst_no, 'discount' => $orderhistory->discount, 'products' => $ar, 'total_amount' => $orderhistory->total_amount];
                     array_push($data, $arr);
                 }
 

@@ -14,9 +14,9 @@
   <body id="pdf">
         @php
             if ($_GET['text'] == 'sales') {
-                $buttontxt = "Print Sales";
+                $buttontxt = "Sales Invoice";
             }else{
-                $buttontxt = "Print Slip";
+                $buttontxt = "Tax Invoice";
             }
         @endphp
         <button class="btn btn-primary" style="margin-left: 45%;margin-top:5%;" id="printSlip">{{ $buttontxt }}</button>
@@ -60,6 +60,9 @@
                         <p><b>Mobile No : {{ $customer->mobile_no }}</b></p>
                         <p><b>Email : {{ $customer->email }}</b> </p>
                         <p><b>Address : {{ $customer->address }}, {{ $customer->pincode }}</b> </p>
+                        <p><b>GST No : @if ($customer->gst_no)
+                            {{ $customer->gst_no }}
+                        @endif</b> </p>
                     </div>
                     <div class="col-md-4"><h6><b> Ship To :</b></h6>
                     <p>N/A</p></div>

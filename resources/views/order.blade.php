@@ -71,7 +71,7 @@
                       echo "<div id='msg' class='text-danger'>Please Select Customer</div>";
                     }
                 @endphp
-                <h4>Total Amount : <span id="totalamount"> ₹ 0</span> <span><a href="{{ url('/invoice/'.$id.'?text=sales') }}" id="sales_report" class="btn btn-primary">Sales Report</a></span> <span><a id="invoice" href="{{ url('/invoice/'.$id.'?text=slip') }}" class="btn btn-primary">Invoice</a></span></h4>
+                <h4>Total Amount : <span id="totalamount"> ₹ 0</span> <span><a href="{{ url('/invoice/'.$id.'?text=sales') }}" id="sales_report" class="btn btn-primary">Sales Invoice</a></span> <span><a id="invoice" href="{{ url('/invoice/'.$id.'?text=slip') }}" class="btn btn-primary">Tax Invoice</a></span></h4>
               </div>
               <div class="col-md-7">
                 <table id="example1" class="table table-bordered table-striped">

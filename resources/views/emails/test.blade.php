@@ -35,6 +35,7 @@
                     <th>Invoice Number</th>
                     <th>Customer Name</th>
                     <th>Customer Mobile No.</th>
+                    <th>GST No</th>
                     <th>Discount</th>
                     <th colspan="6">ProductDetail</th>
                     <th>Total Amount</th>
@@ -66,6 +67,7 @@
                         <td rowspan="{{ $row }}">{{ $value['invoice_no'] }}</td>
                         <td rowspan="{{ $row }}">{{ $value['customer_name'] }}</td>
                         <td rowspan="{{ $row }}">{{ $value['customer_no'] }}</td>
+                        <td rowspan="{{ $row }}">{{ $value['customer_gst_no'] }}</td>
                         <td rowspan="{{ $row }}">{{ $value['discount'] }} %</td>
                         <td>{{ $value['products'][0]['name'] }}</td>
                         <td>{{ $value['products'][0]['quantity'] }}</td>
