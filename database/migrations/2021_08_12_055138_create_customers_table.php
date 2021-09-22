@@ -21,6 +21,7 @@ class CreateCustomersTable extends Migration
             $table->string('email')->nullable();
             $table->string('mobile_no')->nullable();
             $table->string('address')->nullable();
+            $table->string('gst_no')->nullable();
             $table->string('pincode')->nullable();
             $table->timestamps();
         });

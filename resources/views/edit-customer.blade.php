@@ -47,6 +47,10 @@
                     <input type="text" name="address" class="form-control" value="{{ $customer->address }}">
                     </div>
                     <div class="form-group">
+                      <label for="gstno"> GST No : </label>
+                      <input type="text" name="gst_no" class="form-control" value="{{ $customer->gst_no }}">
+                      </div>
+                    <div class="form-group">
                     <label for="pincode"> Pin Code : </label>
                     <input type="text" name="pincode" class="form-control" value="{{ $customer->pincode }}">
                     </div>

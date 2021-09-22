@@ -34,6 +34,7 @@
                     <th>Email</th>
                     <th>Mobile No</th>
                     <th>Address</th>
+                    <th>GST</th>
                     <th>Pincode</th>
                     <th>Action</th>
                 </tr>
@@ -46,6 +47,7 @@
                             <td>{{ $customer->email }}</td>
                             <td>{{ $customer->mobile_no }}</td>
                             <td>{{ $customer->address }}</td>
+                            <td>{{ $customer->gst_no }}</td>
                             <td>{{ $customer->pincode }}</td>
                             <td><a href="{{ url('/edit-customer/'.$customer->customer_id) }}" class="btn btn-primary">Edit</a></td>
                         </tr>
@@ -93,6 +95,10 @@
                 <div class="form-group">
                   <label for="address"> Address : </label>
                   <input type="text" name="address" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="gst_no"> GST No : </label>
+                  <input type="text" name="gst_no" class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="pincode"> Pin Code : </label>

@@ -19,6 +19,7 @@ class CreateOrderHistoryInvoicesTable extends Migration
             $table->string('client_id');
             $table->string('product_name');
             $table->string('quantity');
+            $table->string('discount')->default(0);
             $table->string('gst');
             $table->string('price');
             $table->timestamps();

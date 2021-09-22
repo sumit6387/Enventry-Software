@@ -61,7 +61,7 @@
                 @php
                     $order_id =  \App\Models\Order::orderby('id','desc')->where('client_id',Session::get('email'))->where('status',0)->get()->first();
                     if($order_id){
-                      if($order_id->products != null){
+                      if($order_id->products != null && count(json_decode($order_id->products)) >= 1){
                         $id = $order_id->order_id;
                       }else{
                         $id = "#";
@@ -71,7 +71,7 @@
                       echo "<div id='msg' class='text-danger'>Please Select Customer</div>";
                     }
                 @endphp
-                <h4>Total Amount : <span id="totalamount"> ₹ 0</span> <span><a id="invoice" href="{{ url('/invoice/'.$id) }}" class="btn btn-primary" style="margin-left: 38%;">Invoice</a></span></h4>
+                <h4>Total Amount : <span id="totalamount"> ₹ 0</span> <span><a href="{{ url('/invoice/'.$id.'?text=sales') }}" id="sales_report" class="btn btn-primary">Sales Report</a></span> <span><a id="invoice" href="{{ url('/invoice/'.$id.'?text=slip') }}" class="btn btn-primary">Invoice</a></span></h4>
               </div>
               <div class="col-md-7">
                 <table id="example1" class="table table-bordered table-striped">
@@ -142,6 +142,10 @@
               <div class="form-group">
                 <label for="address"> Address : </label>
                 <input type="text" name="address" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="gstno"> GST No : </label>
+                <input type="text" name="gst_no" class="form-control">
               </div>
               <div class="form-group">
                 <label for="pincode"> Pin Code : </label>
@@ -217,7 +221,8 @@
         }else{
           var url = `{{ url('/order/#') }}`;
         }
-          $('#invoice').attr('href',url);
+          $('#invoice').attr('href',`${url}?text=slip`);
+          $('#sales_report').attr('href',`${url}?text=sales`);
         if(data.status){
             var st =``;
             var amount = 0;
@@ -266,10 +271,12 @@
           }else{
             $('#order_data').html("No Product Found");
             $('#invoice').attr('href',`{{ url('/order/#') }}`);
+            $('#sales_report').attr('href',`{{ url('/order/#') }}`);
           }
         }else{
           $('#order_data').html(data.msg);
           $('#invoice').attr('href',`{{ url('/order/#') }}`);
+          $('#sales_report').attr('href',`{{ url('/order/#') }}`);
         }
       });
     }

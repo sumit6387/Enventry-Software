@@ -94,6 +94,7 @@
                         <th>Product</th>
                         <th>Quantity</th>
                         <th>GST</th>
+                        <th>Discount</th>
                         <th>Price</th>
                         <th>Total Price</th>
                     </tr>
@@ -112,9 +113,11 @@
                                 @else
                                 0
                             @endif% </td>
+                            <td> {{ $product['product_discount']}} %</td>
                             <td> ₹ {{ $product['price']}}</td>
                             @php
                                 $price = $product['price'] - ($product['price']*$order->discount)/100;
+                                $price = $price - ($price*$product['product_discount']/100);
                             @endphp
                             <td>₹ {{ $price  }} * {{ $product['quantity'] }} + ₹ {{ number_format($price*$product['quantity']*$product['gst']/100,2)  }} =₹ {{ number_format($price*$product['quantity'] +($price*$product['quantity']*$product['gst']/100),2)  }} </td>
                             @php

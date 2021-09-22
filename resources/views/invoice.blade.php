@@ -12,7 +12,14 @@
     <title>Invoice - Inventry Software</title>
   </head>
   <body id="pdf">
-        <button class="btn btn-primary" style="margin-left: 45%;margin-top:5%;" id="printSlip">Print Slip</button>
+        @php
+            if ($_GET['text'] == 'sales') {
+                $buttontxt = "Print Sales";
+            }else{
+                $buttontxt = "Print Slip";
+            }
+        @endphp
+        <button class="btn btn-primary" style="margin-left: 45%;margin-top:5%;" id="printSlip">{{ $buttontxt }}</button>
         <div class="container" style="margin: 4% 0% 4% 4%;
         ">
         @php
@@ -76,6 +83,7 @@
                                 <th>Product</th>
                                 <th>Quantity</th>
                                 <th>GST</th>
+                                <th>Discount</th>
                                 <th>Price</th>
                                 <th>Total Price</th>
                             </tr>
@@ -94,9 +102,11 @@
                                         @else
                                         0
                                     @endif% </td>
+                                    <td> <input type="text" style="width: 30px;" value="{{ $product['product_discount'] }}" data-id="{{ $product['product_id'] }}" data-orderid="{{ $order->order_id }}" class="product_discount">%</td>
                                     <td> ₹ {{ $product['price']}}</td>
                                     @php
-                                        $price = $product['price'] - ($product['price']*$order->discount)/100;
+                                        $price = $product['price'] - (($product['price']*$order->discount)/100);
+                                        $price = $price - ($price*$product['product_discount']/100)
                                     @endphp
                                     <td>₹ {{ $price  }} * {{ $product['quantity'] }} + ₹ {{ $price*$product['quantity']*$product['gst']/100 }} =₹ {{ $price*$product['quantity'] +($price*$product['quantity']*$product['gst']/100) }} </td>
                                     @php
@@ -186,6 +196,8 @@
                 var total = {{ $totalAmount }};
                  finaltotal = total- ((parseInt(total) * disc)/100);
                  var order_id = `{{ Request::segment(2) }}`;
+                 alert(order_id);
+                 
                 $.get(`{{ url('/updateTotalBalance/') }}/${order_id}/${finaltotal}/${disc}`,(data,status)=>{
                     $('#total').html(finaltotal.toFixed(2));
                     $('#amount_in_words').html(convertNumberToWords(finaltotal))
@@ -193,6 +205,18 @@
                 });
             });
 
+            $('.product_discount').blur((e)=>{
+                var discount = $(e.target).val();
+                var product_id = $(e.target).attr('data-id');
+                var order_id = $(e.target).attr('data-orderid');
+                $.get(`{{ url('/discountOnProduct/') }}/${order_id}/${product_id}/${discount}`,(data,status)=>{
+                    if(data.status){
+                        window.location.href = window.location.href;
+                    }else{
+                        alert(data.msg)
+                    }
+                });
+            });
             function convertNumberToWords(amount) {
                     var words = new Array();
                     words[0] = '';

@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
-
+// Route::any('{query?}', function () {
+//     return view('error');
+// });
 Route::get('/', [LoginController::class, 'showlogin']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::view('reset-password', 'reset-password');
@@ -69,6 +71,7 @@ Route::group(['middleware' => ["CheckUser"]], function () {
     Route::get('/changeStatusOfOrder', [AdminController::class, 'changeStatusOfOrder']);
     Route::get('/updateTotalBalance/{order_id}/{amount}/{discount}', [AdminController::class, 'updateTotalBalance']);
     Route::get('/balance/{balance}', [AdminController::class, 'balance']);
+    Route::get('/discountOnProduct/{orderid}/{product_id}/{discount}', [AdminController::class, 'discountOnProduct']);
 
     Route::get('/orderHistory', [AdminController::class, 'orderHistory']);
     Route::get('/view-invoice/{order_id}', [AdminController::class, 'viewInvoice']);

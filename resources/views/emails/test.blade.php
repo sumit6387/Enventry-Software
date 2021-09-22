@@ -36,7 +36,7 @@
                     <th>Customer Name</th>
                     <th>Customer Mobile No.</th>
                     <th>Discount</th>
-                    <th colspan="5">ProductDetail</th>
+                    <th colspan="6">ProductDetail</th>
                     <th>Total Amount</th>
                 </tr>
             </thead>
@@ -46,6 +46,7 @@
                     <td>Product</td>
                     <td>QTY</td>
                     <td>GST</td>
+                    <td>Discount</td>
                     <td>Price(in rs)</td>
                     <td>Total Price</td>
                     <td></td>
@@ -69,9 +70,11 @@
                         <td>{{ $value['products'][0]['name'] }}</td>
                         <td>{{ $value['products'][0]['quantity'] }}</td>
                         <td>{{ $value['products'][0]['gst'] }} %</td>
+                        <td>{{ $value['products'][0]['product_discount'] }} %</td>
                         <td>{{ number_format($value['products'][0]['price'], 1) }}</td>
                         @php
                             $price1 = $value['products'][0]['price'] - ($value['products'][0]['price']*$value['discount'])/100;
+                            $price1 = $price1 - ($price1*$value['products'][0]['product_discount']/100);
                             $amount = ($price1*$value['products'][0]['quantity']) + ($price1*$value['products'][0]['quantity']*$value['products'][0]['gst'])/100;
                             $gstamount+= ($price1*$value['products'][0]['quantity']*$value['products'][0]['gst'])/100;
                             $product1 += $value['products'][0]['quantity'];
@@ -93,9 +96,11 @@
                                     <td>{{ $item['name'] }}</td>
                                     <td>{{ $item['quantity'] }}</td>
                                     <td>{{ $item['gst'] }} %</td>
+                                    <td>{{ $item['product_discount'] }} %</td>
                                     <td>{{ number_format($item['price'],1) }}</td>
                                     @php
-                                        $price = $item['price'] - ($item['price']*$value['discount'])/100;
+                                        $price = $item['price'] - ($item['price']*$item['product_discount'])/100;
+                                        $price = $price-($price*$item['product_discount']/100);
                                         $amount1 = ($price*$item['quantity']) + ($price*$item['quantity']*$item['gst'])/100;
                                         $product1 += $item['quantity'];
                                         $gstamount+= ($price*$item['quantity']*$item['gst'])/100;
@@ -112,7 +117,7 @@
                     <td colspan="1">{{ number_format($gstamount,1) }}</td>
                     <td><b>No Of Product</b></td>
                     <td>{{ $product1 }}</td>
-                    <td colspan="4"><b>Total Amount Of History</b></td>
+                    <td colspan="5"><b>Total Amount Of History</b></td>
                     <td>{{ number_format($totalhistoryamount,1) }}</td>
                 </tr>
                 

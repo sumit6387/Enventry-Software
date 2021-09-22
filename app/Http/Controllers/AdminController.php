@@ -356,11 +356,11 @@ class AdminController extends Controller
                             ]);
                         }
                     }
-                    array_push($arr, array("product_id" => $request->product_id, 'quantity' => 1));
+                    array_push($arr, array("product_id" => $request->product_id, 'quantity' => 1, 'discount' => 0));
                     $products = json_encode($arr);
 
                 } else {
-                    $products = json_encode([array("product_id" => $request->product_id, "quantity" => 1)]);
+                    $products = json_encode([array("product_id" => $request->product_id, "quantity" => 1, 'discount' => 0)]);
                 }
                 $order->products = $products;
                 $product = Product::where('product_id', $request->product_id)->where('client_id', $email)->get()->first();
@@ -390,7 +390,7 @@ class AdminController extends Controller
                 $order->order_id = rand(11111111, 99999999);
                 $order->order_serial_id = $order_serial_id;
                 $order->client_id = $request->session()->get('email');
-                $order->products = json_encode([array("product_id" => $request->product_id, "quantity" => 1)]);
+                $order->products = json_encode([array("product_id" => $request->product_id, "quantity" => 1, 'discount' => 0)]);
                 $product = Product::where('product_id', $request->product_id)->where('client_id', $email)->get()->first();
                 $product->quantity -= 1;
                 $product->save();
@@ -573,6 +573,9 @@ class AdminController extends Controller
             if ($request->address) {
                 $new->address = $request->address;
             }
+            if ($request->gst_no) {
+                $new->gst_no = $request->gst_no;
+            }
             if ($request->pincode) {
                 $new->pincode = $request->pincode;
             }
@@ -651,7 +654,7 @@ class AdminController extends Controller
             $ar = [];
             foreach ($arr as $key => $value) {
                 $product = Product::select('name', 'price', 'gst')->where('client_id', $email)->where('product_id', $value->product_id)->get()->first();
-                $prod = array('name' => $product->name, 'price' => $product->price, 'quantity' => $value->quantity, 'gst' => $product->gst);
+                $prod = array('product_id' => $value->product_id, 'name' => $product->name, 'price' => $product->price, 'quantity' => $value->quantity, 'gst' => $product->gst, 'product_discount' => $value->discount);
                 array_push($ar, $prod);
             }
             $data['products'] = $ar;
@@ -713,6 +716,7 @@ class AdminController extends Controller
                 $orderhistory_invoices->order_id = $order->order_id;
                 $orderhistory_invoices->client_id = $order->client_id;
                 $orderhistory_invoices->product_name = $product->name;
+                $orderhistory_invoices->discount = $value->discount;
                 $orderhistory_invoices->quantity = $value->quantity;
                 $orderhistory_invoices->gst = $gst;
                 $orderhistory_invoices->price = $product->price;
@@ -974,7 +978,7 @@ class AdminController extends Controller
             $data['gst'] = GST::where('client_id', $email)->get();
             $arr = [];
             foreach ($ar as $key => $value) {
-                $prod = array('name' => $value->product_name, 'price' => $value->price, 'quantity' => $value->quantity, 'gst' => $value->gst);
+                $prod = array('name' => $value->product_name, 'price' => $value->price, 'quantity' => $value->quantity, 'gst' => $value->gst, 'product_discount' => $value->discount);
                 array_push($arr, $prod);
             }
             $data['products'] = $arr;
@@ -996,9 +1000,13 @@ class AdminController extends Controller
             $from = date('d-m-y h:i:s', strtotime(date('2021-09-06 09:41:23')));
             $to = date('d-m-y h:i:s');
             // dd($from . "  " . $to);
-            $from = date('y-m-d h:i:s', strtotime($request->from));
-            $to = date('y-m-d h:i:s', strtotime($request->to));
-            $orders = Order::where(['client_id' => $email, 'status' => 1])->whereBetween('updated_at', [$from, $to])->get();
+            $from = date('y-m-d', strtotime($request->from)) . " 00:00:00";
+            $to = date('y-m-d', strtotime($request->to)) . " 00:00:00";
+            if (strtotime($from) == strtotime($to)) {
+                $orders = Order::where(['client_id' => $email, 'status' => 1])->whereDate('updated_at', '=', $from)->get();
+            } else {
+                $orders = Order::where(['client_id' => $email, 'status' => 1])->whereBetween('updated_at', [$from, $to])->get();
+            }
             if (count($orders) == 0) {
                 return redirect('/orderHistory')->with(['status' => "danger", 'msg' => "No Data Found Between These Date."]);
             }
@@ -1010,7 +1018,7 @@ class AdminController extends Controller
                 if (count($orderhistoryinvoice) && $orderhistory) {
                     $ar = [];
                     foreach ($orderhistoryinvoice as $invoicedata) {
-                        $a = ['name' => $invoicedata->product_name, 'quantity' => $invoicedata->quantity, 'gst' => $invoicedata->gst, 'price' => $invoicedata->price];
+                        $a = ['name' => $invoicedata->product_name, 'quantity' => $invoicedata->quantity, 'gst' => $invoicedata->gst, 'price' => $invoicedata->price, 'product_discount' => $invoicedata->discount];
                         array_push($ar, $a);
                     }
                     $arr = ["invoice_no" => $orderhistory->order_serial_id, 'customer_name' => $customer->name, 'customer_no' => $customer->mobile_no, 'discount' => $orderhistory->discount, 'products' => $ar, 'total_amount' => $orderhistory->total_amount];
@@ -1049,6 +1057,33 @@ class AdminController extends Controller
         }
     }
 
+    public function discountOnProduct($orderid, $product_id, $discount)
+    {
+        $email = session('email');
+        $order = Order::where(['client_id' => $email, 'order_id' => $orderid])->get()->first();
+        if ($order) {
+            $arr = json_decode($order->products);
+            $ar = array();
+            foreach ($arr as $value) {
+                if ($value->product_id == $product_id) {
+                    $value->discount = $discount;
+                }
+                array_push($ar, $value);
+            }
+            $order->products = json_encode($ar);
+            $order->save();
+            return response()->json([
+                'status' => true,
+                'msg' => "Discount Added",
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'msg' => "Something Went Wrong!",
+            ]);
+        }
+    }
+
     public function updateCustomer(Request $request)
     {
         $valid = Validator::make($request->all(), [
@@ -1063,6 +1098,7 @@ class AdminController extends Controller
                 $customer->mobile_no = $request->mobile_no;
                 $customer->address = $request->address;
                 $customer->pincode = $request->pincode;
+                $customer->gst_no = $request->gst_no;
                 $customer->update();
                 // dd($customer);
                 return redirect('/edit-customer/' . $request->customer_id)->with(['status' => "success", 'msg' => "Customer Updated Successfully"]);
