@@ -196,7 +196,7 @@
                 var total = {{ $totalAmount }};
                  finaltotal = total- ((parseInt(total) * disc)/100);
                  var order_id = `{{ Request::segment(2) }}`;
-                 alert(order_id);
+                //  alert(order_id);
                  
                 $.get(`{{ url('/updateTotalBalance/') }}/${order_id}/${finaltotal}/${disc}`,(data,status)=>{
                     $('#total').html(finaltotal.toFixed(2));
