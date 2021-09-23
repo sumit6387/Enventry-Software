@@ -21,6 +21,7 @@ class CreateOrderHistoryTable extends Migration
             $table->string('customer_name');
             $table->string('customer_mobile_no')->nullable();
             $table->string('products');
+            $table->string('invoice_type')->default('slip');
             $table->string('noofproduct')->default();
             $table->string('total_amount')->default(0);
             $table->string('discount')->default(0);

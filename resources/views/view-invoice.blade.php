@@ -38,6 +38,14 @@
     </style>
 </head>
 <body>
+        @php
+            if ($order->invoice_type == 'sales') {
+                $buttontxt = "Sale Invoice";
+            }else{
+                $buttontxt = "Tax Invoice";
+            }
+        @endphp
+        <h3 style="margin-left: 40%;margin-top:5%;" id="printSlip">{{ $buttontxt }}</h3>
     <div class="container">
         <div class="row">
             @php

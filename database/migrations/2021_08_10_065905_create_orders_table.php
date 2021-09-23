@@ -21,6 +21,7 @@ class CreateOrdersTable extends Migration
             $table->longText('products')->nullable();
             $table->longText('customer')->nullable();
             $table->longText('status')->default(0);
+            $table->string('invoice_type')->default('slip');
             $table->string('discount')->default(0);
             $table->longText('total_amount')->default(0);
             $table->timestamps();

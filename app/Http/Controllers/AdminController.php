@@ -646,6 +646,8 @@ class AdminController extends Controller
         $email = $request->session()->get('email');
         $order = Order::where('order_id', $order_id)->where('client_id', $email)->get()->first();
         if ($order) {
+            $order->invoice_type = $_GET['text'];
+            $order->save();
             $data['customer'] = Customer::where('customer_id', $order->customer)->where('client_id', $email)->get()->first();
             $arr = json_decode($order->products);
             $data['order'] = $order;
@@ -729,6 +731,7 @@ class AdminController extends Controller
             $orderhistory->order_serial_id = $order->order_serial_id;
             $orderhistory->client_id = $email;
             $orderhistory->customer_name = $customer->name;
+            $orderhistory->invoice_type = $order->invoice_type;
             $orderhistory->customer_mobile_no = $customer->mobile_no;
             $orderhistory->products = $str;
             $orderhistory->noofproduct = $noofproduct;
