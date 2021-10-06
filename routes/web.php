@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
-// Route::any('{query?}', function () {
-//     return view('error');
-// });
+Route::any('{query?}', function () {
+    return view('error');
+});
 Route::get('/', [LoginController::class, 'showlogin']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::view('reset-password', 'reset-password');
